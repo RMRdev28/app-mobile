@@ -4,8 +4,11 @@ import 'package:get/get.dart';
 import 'package:plv/common/widgets/appBar/app_bar.dart';
 import 'package:plv/features/home/screens/home.dart';
 import 'package:plv/features/shop/screens/shop.dart';
+import 'package:plv/features/profile/screens/profile.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/helpers/helper_functions.dart';
+
+import 'features/profile/screens/update_profile.dart';
 
 class NavigationMenu extends StatelessWidget {
   final NavigationController controller = Get.put(NavigationController());
@@ -44,7 +47,7 @@ class NavigationController extends GetxController {
     const Home(), // Add the Home widget to the pages list
     const Shop(),
     const Center(child: Text('Favorites Page')),
-    const Center(child: Text('Profile Page')),
+    Profile(),
   ];
 
   void changePage(int index) {

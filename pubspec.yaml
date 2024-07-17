@@ -57,6 +57,9 @@ dependencies:
   capped_progress_indicator: ^0.0.2
 
 
+  file_picker: ^5.2.5
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

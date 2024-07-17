@@ -1,0 +1,174 @@
+import 'package:flutter/material.dart';
+import 'package:plv/utils/constants/colors.dart';
+import 'package:plv/utils/constants/sizes.dart';
+import 'package:get/get.dart';
+import 'signUp.dart';
+
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  bool rememberMe = false;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: TColors.primary,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: 40),
+            Center(
+              child: Column(
+                children: [
+                  Image.asset("assets/images/logo.png", height: 100),
+                  SizedBox(height: 20),
+                  Text(
+                    'Connexion',
+                    style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Connectez-vous à votre compte',
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon: Icon(Icons.email, color: TColors.softGrey),
+                      labelStyle: TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: TColors.softGrey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: TColors.softGrey),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: TColors.softGrey),
+                      ),
+                    ),
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Mot de passe',
+                      prefixIcon: Icon(Icons.lock, color: TColors.softGrey),
+                      labelStyle: TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: TColors.softGrey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: TColors.softGrey),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: TColors.softGrey),
+                      ),
+                    ),
+                    style: TextStyle(color: Colors.black),
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: rememberMe,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            rememberMe = value ?? false;
+                          });
+                        },
+                        activeColor: TColors.secondary,
+                        checkColor: Colors.black,
+                        side: BorderSide(
+                          color: TColors.softGrey, // Couleur lorsqu'elle n'est pas activée
+                        ),
+                      ),
+                      Text('Se souvenir de moi', style: TextStyle(color: Colors.white)),
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text('Mot de passe oublié', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Se connecter'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: TColors.secondary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      foregroundColor: TColors.black,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Vous n'avez pas de compte ? ", style: TextStyle(color: Colors.white)),
+                      TextButton(
+                        onPressed: () {
+                          Get.to(() => SignUp());
+                        },
+                        child: Text(
+                          'S\'inscrire',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
