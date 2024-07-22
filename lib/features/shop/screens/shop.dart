@@ -303,12 +303,12 @@ class _CardsItemState extends State<CardsItem> {
 */
 import 'package:flutter/material.dart';
 import 'package:plv/utils/constants/colors.dart';
-import 'package:plv/utils/constants/sizes.dart';
-import 'package:get/get.dart';
-import 'order.dart';
+// import 'package:plv/utils/constants/sizes.dart';
+// import 'package:get/get.dart';
+// import 'order.dart';
 import '../../../common/widgets/product/horizontal_card.dart';
 import '../../../common/widgets/product/vertical_card.dart';
-import '../../../common/widgets/cicle_icon.dart';
+// import '../../../common/widgets/cicle_icon.dart';
 
 class Shop extends StatefulWidget {
   const Shop({super.key});
@@ -332,19 +332,44 @@ class _ShopState extends State<Shop> {
   String categorieSelected = "Snapup";
 
   Map<String, List<String>> categoryImages = {
-    "Snapup": ["assets/images/stand_pop_up.JPG", "assets/images/photo_call_banner.JPG"],
-    "Beach flag": ["assets/images/Beach flag courbé.JPG", "assets/images/Beach flag Goute.JPG", "assets/images/Oriflamme géant.JPG"],
-    "Desk publicitaire": ["assets/images/desk_publicitaire_item1.JPG", "assets/images/desk_publicitaire_item2.JPG"],
-    "Porte brochure": ["assets/images/porte_brochure_item1.JPG", "assets/images/porte_brochure_item2.JPG"],
-    "Stop trottoir": ["assets/images/stop_trottoir_item1.JPG", "assets/images/stop_trottoir_item2.JPG"],
-    "Ensign magasin": ["assets/images/ensign_magasin_item1.JPG", "assets/images/ensign_magasin_item2.JPG"],
-    "Présentoir": ["assets/images/presentoir_item1.JPG", "assets/images/presentoir_item2.JPG"],
-    "Banner - Roll up": ["assets/images/banner_rollup_item1.JPG", "assets/images/banner_rollup_item2.JPG"],
+    "Snapup": [
+      "assets/images/stand_pop_up.JPG",
+      "assets/images/photo_call_banner.JPG"
+    ],
+    "Beach flag": [
+      "assets/images/Beach flag courbé.JPG",
+      "assets/images/Beach flag Goute.JPG",
+      "assets/images/Oriflamme géant.JPG"
+    ],
+    "Desk publicitaire": [
+      "assets/images/desk_publicitaire_item1.JPG",
+      "assets/images/desk_publicitaire_item2.JPG"
+    ],
+    "Porte brochure": [
+      "assets/images/porte_brochure_item1.JPG",
+      "assets/images/porte_brochure_item2.JPG"
+    ],
+    "Stop trottoir": [
+      "assets/images/stop_trottoir_item1.JPG",
+      "assets/images/stop_trottoir_item2.JPG"
+    ],
+    "Ensign magasin": [
+      "assets/images/ensign_magasin_item1.JPG",
+      "assets/images/ensign_magasin_item2.JPG"
+    ],
+    "Présentoir": [
+      "assets/images/presentoir_item1.JPG",
+      "assets/images/presentoir_item2.JPG"
+    ],
+    "Banner - Roll up": [
+      "assets/images/banner_rollup_item1.JPG",
+      "assets/images/banner_rollup_item2.JPG"
+    ],
   };
 
   @override
   Widget build(BuildContext context) {
-    final darkMode = Theme.of(context).brightness == Brightness.dark;
+    // final darkMode = Theme.of(context).brightness == Brightness.dark;
     List<String> selectedImages = categoryImages[categorieSelected] ?? [];
     return Scaffold(
       body: SingleChildScrollView(
@@ -366,8 +391,8 @@ class _ShopState extends State<Shop> {
                       child: TextField(
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          prefixIcon: Icon(Icons.search,
-                              color: TColors.primary),
+                          prefixIcon:
+                              Icon(Icons.search, color: TColors.primary),
                           hintText: "Rechercher un produit...",
                           hintStyle: TextStyle(color: Colors.black26),
                         ),
@@ -377,16 +402,16 @@ class _ShopState extends State<Shop> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 "Categories",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 20.0, horizontal: 8),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8),
               child: SizedBox(
                 height: 50,
                 child: ListView.builder(
@@ -413,8 +438,8 @@ class _ShopState extends State<Shop> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 "Le Plus Vendu Ce Mois",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -425,34 +450,34 @@ class _ShopState extends State<Shop> {
                 children: [
                   HorizontalCard(
                     imageUrl:
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlxCy5HQLSzKst-QAHR0fAHqFf4K-XvCM2ow&s",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlxCy5HQLSzKst-QAHR0fAHqFf4K-XvCM2ow&s",
                     price: 230000,
                     productName: "Beach flag courbé 2,80 Mètre",
-                    hasDiscount:true,
-                    oldPrice:300000,
+                    hasDiscount: true,
+                    oldPrice: 300000,
                     hasOldPrice: true,
                     discount: 25,
                   ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0, vertical: 16.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               child: Text(
                 "Nos Produits",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-
             GridView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(), // Disable scrolling
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              physics:
+                  const NeverScrollableScrollPhysics(), // Disable scrolling
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 10.0,
                 mainAxisSpacing: 10.0,
-                childAspectRatio: 0.69, // Adjust the aspect ratio to allow for content height
+                childAspectRatio:
+                    0.69, // Adjust the aspect ratio to allow for content height
               ),
               padding: const EdgeInsets.all(10.0),
               itemCount: selectedImages.length,
@@ -462,10 +487,10 @@ class _ShopState extends State<Shop> {
                   price: 230000,
                   productName: "Beach flag courbé 2,80 Mètre",
                   isLocalImage: true,
-                    hasDiscount:true,
-                    oldPrice:300000,
+                  hasDiscount: true,
+                  oldPrice: 300000,
                   hasOldPrice: true,
-                  discount: 25,// Adjust this according to your image source
+                  discount: 25, // Adjust this according to your image source
                 );
               },
             ),

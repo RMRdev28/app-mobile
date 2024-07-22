@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plv/utils/constants/colors.dart';
 
 class OrdersPage extends StatelessWidget {
-  const OrdersPage({Key? key}) : super(key: key);
+  const OrdersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,12 @@ class OrdersPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mes achats'),
+        title: const Text('Mes achats'),
         backgroundColor: TColors.primary,
       ),
       body: Column(
         children: [
-          TabBar(
+          const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.shopping_bag), text: 'Mes achats'),
               Tab(icon: Icon(Icons.local_shipping), text: 'Suivi colis'),

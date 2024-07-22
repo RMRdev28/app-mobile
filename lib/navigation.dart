@@ -8,10 +8,12 @@ import 'package:plv/features/profile/screens/profile.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/helpers/helper_functions.dart';
 
-import 'features/profile/screens/update_profile.dart';
+// import 'features/profile/screens/update_profile.dart';
 
 class NavigationMenu extends StatelessWidget {
   final NavigationController controller = Get.put(NavigationController());
+
+  NavigationMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class NavigationController extends GetxController {
     const Home(), // Add the Home widget to the pages list
     const Shop(),
     const Center(child: Text('Favorites Page')),
-    Profile(),
+    const Profile(),
   ];
 
   void changePage(int index) {

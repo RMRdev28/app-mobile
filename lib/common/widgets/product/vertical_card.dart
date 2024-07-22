@@ -3,7 +3,7 @@ import 'package:plv/utils/constants/colors.dart';
 
 // ignore: must_be_immutable
 class VerticalCard extends StatelessWidget {
-  VerticalCard({
+  const VerticalCard({
     super.key,
     required this.productName,
     required this.price,
@@ -12,7 +12,8 @@ class VerticalCard extends StatelessWidget {
     required this.imageUrl,
     this.hasDiscount = false,
     this.hasOldPrice = false,
-    this.isLocalImage = false, // Add a flag to indicate if the image is local or network
+    this.isLocalImage =
+        false, // Add a flag to indicate if the image is local or network
   });
 
   final String productName;
@@ -45,15 +46,15 @@ class VerticalCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: isLocalImage
-                    ? Image.asset(
-                    imageUrl, height: 130, fit: BoxFit.cover) // Use local image
-                    : Image.network(imageUrl, height: 130,
-                    fit: BoxFit.cover), // Use network image
+                    ? Image.asset(imageUrl,
+                        height: 130, fit: BoxFit.cover) // Use local image
+                    : Image.network(imageUrl,
+                        height: 130, fit: BoxFit.cover), // Use network image
               ),
               if (hasDiscount)
                 Positioned(
                   top: 0,
-                  left:0,
+                  left: 0,
                   child: Container(
                     decoration: BoxDecoration(
                       color: TColors.secondary.withOpacity(0.5),
@@ -75,10 +76,10 @@ class VerticalCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              Positioned(
+              const Positioned(
                 top: 8,
                 right: 8,
-                child: const Icon(Icons.favorite, color: Colors.red),
+                child: Icon(Icons.favorite, color: Colors.red),
               ),
             ],
           ),

@@ -4,6 +4,8 @@ import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 
 class Order extends StatefulWidget {
+  const Order({super.key});
+
   @override
   _OrderPageState createState() => _OrderPageState();
 }
@@ -18,26 +20,28 @@ class _OrderPageState extends State<Order> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Effectuer votre commande', style: TextStyle(color: TColors.dark)),
+        title: const Text('Effectuer votre commande',
+            style: TextStyle(color: TColors.dark)),
         backgroundColor: TColors.white,
       ),
       body: Theme(
         data: ThemeData(
           primaryColor: TColors.primary,
-          colorScheme: ColorScheme.light(primary: TColors.primary),
+          colorScheme: const ColorScheme.light(primary: TColors.primary),
         ),
         child: Column(
           children: [
             Expanded(
               child: Stepper(
-                controlsBuilder: (BuildContext context, ControlsDetails details) {
-                  return SizedBox.shrink();
+                controlsBuilder:
+                    (BuildContext context, ControlsDetails details) {
+                  return const SizedBox.shrink();
                 },
                 currentStep: currentStep,
                 onStepTapped: (step) => setState(() => currentStep = step),
                 steps: [
                   Step(
-                    title: Text(
+                    title: const Text(
                       "Choisissez votre Design",
                       style: TextStyle(
                         fontSize: 18,
@@ -61,7 +65,7 @@ class _OrderPageState extends State<Order> {
                                 },
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: buildDesignOption(
                                 icon: Icons.design_services,
@@ -69,7 +73,8 @@ class _OrderPageState extends State<Order> {
                                 subtitle: 'Plus 3200 DA',
                                 onTap: () {
                                   setState(() {
-                                    selectedDesign = 'Conception par l\'équipe PLV Algérie';
+                                    selectedDesign =
+                                        'Conception par l\'équipe PLV Algérie';
                                     currentStep = 2; // Skip file step
                                   });
                                 },
@@ -83,7 +88,7 @@ class _OrderPageState extends State<Order> {
                     isActive: currentStep >= 0,
                   ),
                   Step(
-                    title: Text(
+                    title: const Text(
                       "Sélectionnez une option pour le fichier",
                       style: TextStyle(
                         fontSize: 18,
@@ -99,23 +104,26 @@ class _OrderPageState extends State<Order> {
                               child: buildDesignOption(
                                 icon: Icons.schedule,
                                 title: 'Envoyer le fichier ultérieurement',
-                                isSelected: fileName == 'Envoyer le fichier ultérieurement',
+                                isSelected: fileName ==
+                                    'Envoyer le fichier ultérieurement',
                                 onTap: () {
                                   setState(() {
-                                    fileName = 'Envoyer le fichier ultérieurement';
+                                    fileName =
+                                        'Envoyer le fichier ultérieurement';
                                     currentStep = 2;
                                   });
                                 },
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: buildDesignOption(
                                 icon: Icons.upload_file,
                                 title: fileName ?? 'Joindre un fichier',
                                 isSelected: fileName != null,
                                 onTap: () async {
-                                  FilePickerResult? result = await FilePicker.platform.pickFiles();
+                                  FilePickerResult? result =
+                                      await FilePicker.platform.pickFiles();
                                   if (result != null) {
                                     setState(() {
                                       fileName = result.files.single.name;
@@ -133,7 +141,7 @@ class _OrderPageState extends State<Order> {
                     isActive: currentStep >= 1,
                   ),
                   Step(
-                    title: Text(
+                    title: const Text(
                       "Complétez votre commande",
                       style: TextStyle(
                         fontSize: 18,
@@ -141,144 +149,160 @@ class _OrderPageState extends State<Order> {
                         color: TColors.primary,
                       ),
                     ),
-                    content:
-                      Container(
-                        height: 200,
-                        width: 400,// Fix the height to make all boxes the same size
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: TColors.primaryBackground,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children:[
-                            Row(
+                    content: Container(
+                      height: 200,
+                      width:
+                          400, // Fix the height to make all boxes the same size
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: TColors.primaryBackground,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Row(
                             children: [
-                                Text(
+                              Text(
                                 "Produit",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   color: TColors.darkGrey,
-                                  ),
                                 ),
-                              SizedBox(width: TSizes.sm,),
-                                Text(
+                              ),
+                              SizedBox(
+                                width: TSizes.sm,
+                              ),
+                              Text(
                                 "Oriflamme géant 5 Mètre",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: TColors.textPrimary,
-                                  ),
                                 ),
-                            ],
-                            ),
-                          SizedBox(height: TSizes.sm,),
-                          Row(
-                          children: [
-                            Text(
-                            "Quantite",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: TColors.darkGrey,
-                              ),
-                            ),
-                            SizedBox(width: TSizes.sm,),
-                          Row(
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.remove),
-                              onPressed: () {
-                              setState(() {
-                              if (quantity > 1) {
-                              quantity--;
-                              }
-                              });
-                              },
-                              ),
-                            Text(
-                              quantity.toString(),
-                              style: TextStyle(fontSize: 12),
-                              ),
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                              setState(() {
-                              quantity++;
-                              });
-                              },
                               ),
                             ],
-                            ),
-                            ],
                           ),
-                          SizedBox(height: TSizes.sm,),
+                          const SizedBox(
+                            height: TSizes.sm,
+                          ),
                           Row(
-                          children: [
-                            Text(
-                            "Prix Unitaire",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: TColors.darkGrey,
+                            children: [
+                              const Text(
+                                "Quantite",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: TColors.darkGrey,
+                                ),
                               ),
-                            ),
-                            SizedBox(width: TSizes.sm,),
-                            Text(
-                            "87600,00 DZD",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: TColors.textPrimary,
+                              const SizedBox(
+                                width: TSizes.sm,
                               ),
-                            ),
-                          ],
-                          ),
-                            SizedBox(height: TSizes.sm,),
-                          Row(
-                          children: [
-                            Text(
-                            "Totale",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: TColors.darkGrey,
-                              ),
-                            ),
-                            SizedBox(width: TSizes.sm,),
-                            Text(
-                            "87600,00 DZD",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: TColors.textPrimary,
-                              ),
-                            ),
-                          ],
-                          ),
-                            SizedBox(width: TSizes.lg,),
-                            BottomAppBar(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  ElevatedButton(
+                              Row(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: const Icon(Icons.remove),
                                     onPressed: () {
-                                      // Add to cart logic
+                                      setState(() {
+                                        if (quantity > 1) {
+                                          quantity--;
+                                        }
+                                      });
                                     },
-                                    child: Text("Ajouter au panier"),
                                   ),
-                                  ElevatedButton(
+                                  Text(
+                                    quantity.toString(),
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.add),
                                     onPressed: () {
-                                      // Checkout logic
+                                      setState(() {
+                                        quantity++;
+                                      });
                                     },
-                                    child: Text("Passer à la caisse"),
                                   ),
                                 ],
                               ),
-                            )
-                          ],
-                        ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: TSizes.sm,
+                          ),
+                          const Row(
+                            children: [
+                              Text(
+                                "Prix Unitaire",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: TColors.darkGrey,
+                                ),
+                              ),
+                              SizedBox(
+                                width: TSizes.sm,
+                              ),
+                              Text(
+                                "87600,00 DZD",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: TColors.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: TSizes.sm,
+                          ),
+                          const Row(
+                            children: [
+                              Text(
+                                "Totale",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: TColors.darkGrey,
+                                ),
+                              ),
+                              SizedBox(
+                                width: TSizes.sm,
+                              ),
+                              Text(
+                                "87600,00 DZD",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: TColors.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: TSizes.lg,
+                          ),
+                          BottomAppBar(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Add to cart logic
+                                  },
+                                  child: const Text("Ajouter au panier"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Checkout logic
+                                  },
+                                  child: const Text("Passer à la caisse"),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      /*children: [
+                    ),
+                    /*children: [
                         Text(
                           "Choisir la quantité",
                           style: TextStyle(
@@ -325,24 +349,24 @@ class _OrderPageState extends State<Order> {
       ),
       bottomNavigationBar: currentStep == 2
           ? BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                // Add to cart logic
-              },
-              child: Text("Ajouter au panier"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Checkout logic
-              },
-              child: Text("Passer à la caisse"),
-            ),
-          ],
-        ),
-      )
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Add to cart logic
+                    },
+                    child: const Text("Ajouter au panier"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Checkout logic
+                    },
+                    child: const Text("Passer à la caisse"),
+                  ),
+                ],
+              ),
+            )
           : null,
     );
   }
@@ -358,29 +382,31 @@ class _OrderPageState extends State<Order> {
       onTap: onTap,
       child: Container(
         height: 200, // Fix the height to make all boxes the same size
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isSelected ? TColors.primaryBackground : TColors.primaryBackground,
+          color: isSelected
+              ? TColors.primaryBackground
+              : TColors.primaryBackground,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 40),
-            SizedBox(height: TSizes.sm),
+            const SizedBox(height: TSizes.sm),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: TSizes.fontSizeSm,
                 color: TColors.textPrimary,
               ),
               textAlign: TextAlign.center,
             ),
             if (subtitle != null) ...[
-              SizedBox(height: TSizes.sm),
+              const SizedBox(height: TSizes.sm),
               Text(
                 subtitle,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 11,
                   color: TColors.darkerGrey,
                 ),

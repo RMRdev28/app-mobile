@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'login.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  const SignUp({super.key});
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -56,19 +56,22 @@ class _SignUpState extends State<SignUp> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Center(
               child: Column(
                 children: [
                   Image.asset("assets/images/logo.png", height: 100),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Inscription',
-                    style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     'Créez votre compte',
                     style: TextStyle(fontSize: 16.0, color: Colors.white),
                     textAlign: TextAlign.center,
@@ -81,216 +84,234 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: firstNameController,
                     decoration: InputDecoration(
                       labelText: 'Prénom',
-                      prefixIcon: Icon(Icons.person, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon:
+                          const Icon(Icons.person, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: lastNameController,
                     decoration: InputDecoration(
                       labelText: 'Nom',
-                      prefixIcon: Icon(Icons.person, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon:
+                          const Icon(Icons.person, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: mobileController,
                     decoration: InputDecoration(
                       labelText: 'Mobile',
-                      prefixIcon: Icon(Icons.phone, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon:
+                          const Icon(Icons.phone, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: addressController,
                     decoration: InputDecoration(
                       labelText: 'Adresse',
-                      prefixIcon: Icon(Icons.home, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon:
+                          const Icon(Icons.home, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: wilayaController,
                     decoration: InputDecoration(
                       labelText: 'Wilaya',
-                      prefixIcon: Icon(Icons.location_city, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon: const Icon(Icons.location_city,
+                          color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: communeController,
                     decoration: InputDecoration(
                       labelText: 'Commune',
-                      prefixIcon: Icon(Icons.location_on, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon: const Icon(Icons.location_on,
+                          color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      prefixIcon: Icon(Icons.email, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon:
+                          const Icon(Icons.email, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Mot de passe',
-                      prefixIcon: Icon(Icons.lock, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon:
+                          const Icon(Icons.lock, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                     obscureText: true,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {},
-                    child: Text('S\'inscrire'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TColors.secondary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                       foregroundColor: TColors.black,
                     ),
+                    child: Text('S\'inscrire'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Déjà un compte ? ", style: TextStyle(color: Colors.white)),
+                      const Text("Déjà un compte ? ",
+                          style: TextStyle(color: Colors.white)),
                       TextButton(
                         onPressed: () {
-                          Get.to(() => Login());
+                          Get.to(() => const Login());
                         },
-                        child: Text(
+                        child: const Text(
                           'Connectez-vous',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),
                     ],

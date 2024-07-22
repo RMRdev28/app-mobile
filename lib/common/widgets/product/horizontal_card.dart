@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plv/common/widgets/cicle_icon.dart';
 import 'package:plv/utils/constants/colors.dart';
 
 // ignore: must_be_immutable
@@ -107,14 +106,14 @@ class HorizontalCard extends StatelessWidget {
                     ),
                     hasOldPrice
                         ? Text(
-                      "$oldPrice DZD",
-                      style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.black,
-                          decoration: TextDecoration.lineThrough,
-                          decorationColor: TColors.secondary,
-                          decorationThickness: 2),
-                    )
+                            "$oldPrice DZD",
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor: TColors.secondary,
+                                decorationThickness: 2),
+                          )
                         : const SizedBox(height: 15),
                   ],
                 ),
