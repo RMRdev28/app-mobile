@@ -92,7 +92,7 @@ class HorizontalCard extends StatelessWidget {
                             color: TColors.primary),
                       ),
                     ),
-                    const cirlceIcon(icon: Icons.favorite, color: Colors.red),
+                    const Icon(Icons.favorite, color: Colors.red),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -107,14 +107,14 @@ class HorizontalCard extends StatelessWidget {
                     ),
                     hasOldPrice
                         ? Text(
-                            "$oldPrice DZD",
-                            style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.black,
-                                decoration: TextDecoration.overline,
-                                decorationColor: TColors.secondary,
-                                decorationThickness: 2),
-                          )
+                      "$oldPrice DZD",
+                      style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: TColors.secondary,
+                          decorationThickness: 2),
+                    )
                         : const SizedBox(height: 15),
                   ],
                 ),

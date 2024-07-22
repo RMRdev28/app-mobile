@@ -306,134 +306,248 @@ import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 import 'package:get/get.dart';
 import 'order.dart';
+import '../../../common/widgets/product/horizontal_card.dart';
+import '../../../common/widgets/product/vertical_card.dart';
+import '../../../common/widgets/cicle_icon.dart';
 
-class Shop extends StatelessWidget {
+class Shop extends StatefulWidget {
   const Shop({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final darkMode = Theme
-        .of(context)
-        .brightness == Brightness.dark;
+  _ShopState createState() => _ShopState();
+}
 
+class _ShopState extends State<Shop> {
+  List<String> categories = [
+    "Snapup",
+    "Beach flag",
+    "Desk publicitaire",
+    "Porte brochure",
+    "Stop trottoir",
+    "Ensign magasin",
+    "Présentoir",
+    "Banner - Roll up"
+  ];
+
+  String categorieSelected = "Snapup";
+
+  Map<String, List<String>> categoryImages = {
+    "Snapup": ["assets/images/stand_pop_up.JPG", "assets/images/photo_call_banner.JPG"],
+    "Beach flag": ["assets/images/Beach flag courbé.JPG", "assets/images/Beach flag Goute.JPG", "assets/images/Oriflamme géant.JPG"],
+    "Desk publicitaire": ["assets/images/desk_publicitaire_item1.JPG", "assets/images/desk_publicitaire_item2.JPG"],
+    "Porte brochure": ["assets/images/porte_brochure_item1.JPG", "assets/images/porte_brochure_item2.JPG"],
+    "Stop trottoir": ["assets/images/stop_trottoir_item1.JPG", "assets/images/stop_trottoir_item2.JPG"],
+    "Ensign magasin": ["assets/images/ensign_magasin_item1.JPG", "assets/images/ensign_magasin_item2.JPG"],
+    "Présentoir": ["assets/images/presentoir_item1.JPG", "assets/images/presentoir_item2.JPG"],
+    "Banner - Roll up": ["assets/images/banner_rollup_item1.JPG", "assets/images/banner_rollup_item2.JPG"],
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final darkMode = Theme.of(context).brightness == Brightness.dark;
+    List<String> selectedImages = categoryImages[categorieSelected] ?? [];
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              height: 55,
-              padding: const EdgeInsets.only(right: 5),
-              decoration: BoxDecoration(
-                color: TColors.primaryBackground,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: const Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.search, color: TColors.primary),
-                        hintText: "Rechercher un produit...",
-                        hintStyle: TextStyle(color: Colors.black26),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                height: 55,
+                padding: const EdgeInsets.only(right: 5),
+                decoration: BoxDecoration(
+                  color: TColors.primaryBackground,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: const Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          prefixIcon: Icon(Icons.search,
+                              color: TColors.primary),
+                          hintText: "Rechercher un produit...",
+                          hintStyle: TextStyle(color: Colors.black26),
+                        ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                "Categories",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 20.0, horizontal: 8),
+              child: SizedBox(
+                height: 50,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          categorieSelected = categories[index];
+                        });
+                      },
+                      child: cirlceIcon(
+                        icon: _getIconForCategory(categories[index]),
+                        color: categorieSelected == categories[index]
+                            ? TColors.primaryBackground
+                            : TColors.primary,
+                        backgroundColor: categorieSelected == categories[index]
+                            ? TColors.primary
+                            : TColors.primaryBackground,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                "Le Plus Vendu Ce Mois",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Center(
+              child: Column(
+                children: [
+                  HorizontalCard(
+                    imageUrl:
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlxCy5HQLSzKst-QAHR0fAHqFf4K-XvCM2ow&s",
+                    price: 230000,
+                    productName: "Beach flag courbé 2,80 Mètre",
+                    hasDiscount:true,
+                    oldPrice:300000,
+                    hasOldPrice: true,
+                    discount: 25,
                   ),
                 ],
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              "Categories",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),
-            child: SizedBox(
-              height: 50,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  buildCategoryIcon(Icons.home),
-                  buildCategoryIcon(Icons.checkroom),
-                  buildCategoryIcon(Icons.computer),
-                  buildCategoryIcon(Icons.videogame_asset),
-                  buildCategoryIcon(Icons.phone_android),
-                ],
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 16.0),
+              child: Text(
+                "Nos Produits",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              "Le Plus Vendu Ce Mois",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+
+            GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(), // Disable scrolling
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 0.69, // Adjust the aspect ratio to allow for content height
+              ),
+              padding: const EdgeInsets.all(10.0),
+              itemCount: selectedImages.length,
+              itemBuilder: (context, index) {
+                return VerticalCard(
+                  imageUrl: selectedImages[index],
+                  price: 230000,
+                  productName: "Beach flag courbé 2,80 Mètre",
+                  isLocalImage: true,
+                    hasDiscount:true,
+                    oldPrice:300000,
+                  hasOldPrice: true,
+                  discount: 25,// Adjust this according to your image source
+                );
+              },
             ),
-          ),
-          buildProductMoreBuyingCard(
-            "assets/images/Beach flag courbé.JPG",
-            "Beach flag courbé 2,80 Mètre",
-            "23 000,00 DZD",
-            "29 000,00 DZD",
-            25,
-            true,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 16.0, vertical: 16.0),
-            child: Text(
-              "Nos Produits",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                buildProductCard(
-                  "assets/images/beach_flag.JPG",
-                  "Beach flag courbé 2,80 Mètre",
-                  "23 000,00 DZD",
-                  null,
-                  25,
-                  false,
-                ),
-                buildProductCard(
-                  "assets/images/beach_flag.JPG",
-                  "Beach flag courbé 2,80 Mètre",
-                  "23 000,00 DZD",
-                  null,
-                  25,
-                  false,
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget buildCategoryIcon(IconData iconData) {
+  IconData _getIconForCategory(String category) {
+    switch (category) {
+      case "Snapup":
+        return Icons.home;
+      case "Beach flag":
+        return Icons.checkroom;
+      case "Desk publicitaire":
+        return Icons.computer;
+      case "Porte brochure":
+        return Icons.book;
+      case "Stop trottoir":
+        return Icons.stop;
+      case "Ensign magasin":
+        return Icons.store;
+      case "Présentoir":
+        return Icons.display_settings;
+      case "Banner - Roll up":
+        return Icons.flag;
+      default:
+        return Icons.home;
+    }
+  }
+}
+
+class cirlceIcon extends StatelessWidget {
+  const cirlceIcon({
+    super.key,
+    required this.icon,
+    this.height = 50,
+    this.iconSize = 25.0,
+    this.width = 50,
+    this.color = TColors.primary,
+    this.backgroundColor = TColors.primaryBackground,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8.0),
+  });
+
+  final double width, height, iconSize;
+  final IconData? icon;
+  final Color color;
+  final Color backgroundColor;
+  final EdgeInsets padding;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundColor: TColors.primaryBackground,
-            child: Icon(iconData, color: TColors.primary),
+      padding: padding,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: backgroundColor, // Background color of the icon
+          border: Border.all(color: Colors.black12),
+          shape: BoxShape.circle, // Makes the container circular
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(0, 2),
+              blurRadius: 6,
+            ),
+          ],
+        ),
+        child: Center(
+          child: Icon(
+            icon, // Icon to be displayed
+            color: color, // Icon color
+            size: iconSize, // Icon size
           ),
-        ],
+        ),
       ),
     );
   }
-
+}
+/*
   Widget buildProductCard(String imagePath, String productName, String price,
       String? oldPrice, int discount, bool isBestSeller) {
     return Padding(
@@ -654,4 +768,4 @@ class Shop extends StatelessWidget {
       ),
     );
   }
-}
+*/
