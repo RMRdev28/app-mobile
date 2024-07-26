@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
-import 'package:get/get.dart';
 import 'login.dart';
 
 class SignUp extends StatefulWidget {
@@ -16,11 +18,14 @@ class _SignUpState extends State<SignUp> {
   late TextEditingController lastNameController;
   late TextEditingController mobileController;
   late TextEditingController addressController;
-  late TextEditingController wilayaController;
-  late TextEditingController communeController;
   late TextEditingController emailController;
   late TextEditingController passwordController;
-  bool rememberMe = false;
+
+  List<dynamic> wilayas = [];
+  List<dynamic> communes = [];
+  List<dynamic> filteredCommunes = [];
+  String? selectedWilaya;
+  String? selectedCommune;
 
   @override
   void initState() {
@@ -29,10 +34,21 @@ class _SignUpState extends State<SignUp> {
     lastNameController = TextEditingController();
     mobileController = TextEditingController();
     addressController = TextEditingController();
-    wilayaController = TextEditingController();
-    communeController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
+
+    loadWilayas().then((data) {
+      setState(() {
+        wilayas = data;
+      });
+      print("Wilayas loaded: $wilayas");
+    });
+    loadCommunes().then((data) {
+      setState(() {
+        communes = data;
+      });
+      print("Communes loaded: $communes");
+    });
   }
 
   @override
@@ -41,11 +57,33 @@ class _SignUpState extends State<SignUp> {
     lastNameController.dispose();
     mobileController.dispose();
     addressController.dispose();
-    wilayaController.dispose();
-    communeController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<List<dynamic>> loadWilayas() async {
+    final String response = await rootBundle
+        .loadString('assets/AlgeriaCities/Wilaya_Of_Algeria.json');
+    print("Wilayas JSON response: $response");
+    return json.decode(response);
+  }
+
+  Future<List<dynamic>> loadCommunes() async {
+    final String response = await rootBundle
+        .loadString('assets/AlgeriaCities/Commune_Of_Algeria.json');
+    print("Communes JSON response: $response");
+    return json.decode(response);
+  }
+
+  void filterCommunes(String wilayaId) {
+    setState(() {
+      filteredCommunes = communes
+          .where((commune) => commune['wilaya_id'] == wilayaId)
+          .toList();
+      selectedCommune = null; // Reset selectedCommune when wilaya changes
+    });
+    print("Filtered Communes for Wilaya ID $wilayaId: $filteredCommunes");
   }
 
   @override
@@ -107,7 +145,7 @@ class _SignUpState extends State<SignUp> {
                         borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -132,7 +170,7 @@ class _SignUpState extends State<SignUp> {
                         borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -157,7 +195,7 @@ class _SignUpState extends State<SignUp> {
                         borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -182,11 +220,10 @@ class _SignUpState extends State<SignUp> {
                         borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: wilayaController,
+                  SizedBox(height: 20),
+                  DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                       labelText: 'Wilaya',
                       prefixIcon: const Icon(Icons.location_city,
@@ -207,11 +244,23 @@ class _SignUpState extends State<SignUp> {
                         borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: const TextStyle(color: Colors.black),
+                    items:
+                        wilayas.map<DropdownMenuItem<String>>((dynamic value) {
+                      return DropdownMenuItem<String>(
+                        value: value['id'],
+                        child: Text(value['name']),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedWilaya = newValue;
+                        filterCommunes(newValue!);
+                      });
+                    },
+                    value: selectedWilaya,
                   ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: communeController,
+                  SizedBox(height: 20),
+                  DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                       labelText: 'Commune',
                       prefixIcon: const Icon(Icons.location_on,
@@ -232,7 +281,19 @@ class _SignUpState extends State<SignUp> {
                         borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: const TextStyle(color: Colors.black),
+                    items: filteredCommunes
+                        .map<DropdownMenuItem<String>>((dynamic value) {
+                      return DropdownMenuItem<String>(
+                        value: value['id'],
+                        child: Text(value['name']),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedCommune = newValue;
+                      });
+                    },
+                    value: selectedCommune,
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -257,7 +318,7 @@ class _SignUpState extends State<SignUp> {
                         borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -282,7 +343,7 @@ class _SignUpState extends State<SignUp> {
                         borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black),
                     obscureText: true,
                   ),
                   const SizedBox(height: 20),

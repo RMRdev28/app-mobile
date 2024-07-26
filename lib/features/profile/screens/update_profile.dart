@@ -1,10 +1,23 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
-import 'package:get/get.dart';
-// import 'package:plv/utils/theme/theme.dart';
+import 'package:plv/utils/theme/theme.dart';
 
-class UpdateProfile extends StatelessWidget {
+class UpdateProfile extends StatefulWidget {
+  @override
+  _UpdateProfileState createState() => _UpdateProfileState();
+}
+
+class _UpdateProfileState extends State<UpdateProfile> {
+  List<dynamic> wilayas = [];
+  List<dynamic> communes = [];
+  List<dynamic> filteredCommunes = [];
+  String? selectedWilaya;
+  String? selectedCommune;
+
   final TextEditingController nameController =
       TextEditingController(text: 'Test Nom');
   final TextEditingController emailController =
@@ -18,7 +31,46 @@ class UpdateProfile extends StatelessWidget {
   final TextEditingController confirmPasswordController =
       TextEditingController(text: 'password');
 
-  UpdateProfile({super.key});
+  @override
+  void initState() {
+    super.initState();
+    loadWilayas().then((data) {
+      setState(() {
+        wilayas = data;
+      });
+      print("Wilayas loaded: $wilayas");
+    });
+    loadCommunes().then((data) {
+      setState(() {
+        communes = data;
+      });
+      print("Communes loaded: $communes");
+    });
+  }
+
+  Future<List<dynamic>> loadWilayas() async {
+    final String response = await rootBundle
+        .loadString('assets/AlgeriaCities/Wilaya_Of_Algeria.json');
+    print("Wilayas JSON response: $response");
+    return json.decode(response);
+  }
+
+  Future<List<dynamic>> loadCommunes() async {
+    final String response = await rootBundle
+        .loadString('assets/AlgeriaCities/Commune_Of_Algeria.json');
+    print("Communes JSON response: $response");
+    return json.decode(response);
+  }
+
+  void filterCommunes(String wilayaId) {
+    setState(() {
+      filteredCommunes = communes
+          .where((commune) => commune['wilaya_id'] == wilayaId)
+          .toList();
+      selectedCommune = null; // Reset selectedCommune when wilaya changes
+    });
+    print("Filtered Communes for Wilaya ID $wilayaId: $filteredCommunes");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,16 +145,20 @@ class UpdateProfile extends StatelessWidget {
                         labelText: 'Wilaya',
                         prefixIcon: Icon(Icons.location_city),
                       ),
-                      items: <String>['Boumerdès', 'Alger', 'Oran']
-                          .map((String value) {
+                      items: wilayas
+                          .map<DropdownMenuItem<String>>((dynamic value) {
                         return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
+                          value: value['id'],
+                          child: Text(value['name']),
                         );
                       }).toList(),
-                      onChanged: (_) {},
-                      // To set a default value
-                      value: 'Boumerdès',
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedWilaya = newValue;
+                          filterCommunes(newValue!);
+                        });
+                      },
+                      value: selectedWilaya,
                     ),
                     const SizedBox(height: TSizes.md),
                     DropdownButtonFormField<String>(
@@ -110,16 +166,19 @@ class UpdateProfile extends StatelessWidget {
                         labelText: 'Commune',
                         prefixIcon: Icon(Icons.location_city),
                       ),
-                      items: <String>['Boumerdès', 'Alger', 'Oran']
-                          .map((String value) {
+                      items: filteredCommunes
+                          .map<DropdownMenuItem<String>>((dynamic value) {
                         return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
+                          value: value['id'],
+                          child: Text(value['name']),
                         );
                       }).toList(),
-                      onChanged: (_) {},
-                      // To set a default value
-                      value: 'Boumerdès',
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedCommune = newValue;
+                        });
+                      },
+                      value: selectedCommune,
                     ),
                     const SizedBox(height: TSizes.md),
                     TextField(
