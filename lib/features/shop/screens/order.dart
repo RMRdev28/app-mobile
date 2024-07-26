@@ -47,35 +47,45 @@ class _OrderPageState extends State<Order> {
                     ),
                     content: Column(
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: buildDesignOption(
-                                icon: Icons.insert_drive_file,
-                                title: 'Fichier disponible',
-                                onTap: () {
-                                  setState(() {
-                                    selectedDesign = 'Fichier disponible';
-                                    currentStep = 1;
-                                  });
-                                },
+                        Container(
+                          height: 150, // Control height
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: buildDesignOption(
+                                  icon: Icons.insert_drive_file,
+                                  title: 'Fichier disponible',
+                                  onTap: () {
+                                    setState(() {
+                                      selectedDesign = 'Fichier disponible';
+                                      currentStep = 1;
+                                    });
+                                  },
+                                ),
                               ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: buildDesignOption(
-                                icon: Icons.design_services,
-                                title: 'Conception par l\'équipe PLV Algérie',
-                                subtitle: 'Plus 3200 DA',
-                                onTap: () {
-                                  setState(() {
-                                    selectedDesign = 'Conception par l\'équipe PLV Algérie';
-                                    currentStep = 2; // Skip file step
-                                  });
-                                },
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 150, // Control height
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: buildDesignOption(
+                                  icon: Icons.design_services,
+                                  title: 'Conception par l\'équipe PLV Algérie',
+                                  subtitle: 'Plus 3200 DA',
+                                  onTap: () {
+                                    setState(() {
+                                      selectedDesign = 'Conception par l\'équipe PLV Algérie';
+                                      currentStep = 2; // Skip file step
+                                    });
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -93,39 +103,49 @@ class _OrderPageState extends State<Order> {
                     ),
                     content: Column(
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: buildDesignOption(
-                                icon: Icons.schedule,
-                                title: 'Envoyer le fichier ultérieurement',
-                                isSelected: fileName == 'Envoyer le fichier ultérieurement',
-                                onTap: () {
-                                  setState(() {
-                                    fileName = 'Envoyer le fichier ultérieurement';
-                                    currentStep = 2;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: buildDesignOption(
-                                icon: Icons.upload_file,
-                                title: fileName ?? 'Joindre un fichier',
-                                isSelected: fileName != null,
-                                onTap: () async {
-                                  FilePickerResult? result = await FilePicker.platform.pickFiles();
-                                  if (result != null) {
+                        Container(
+                          height: 150, // Control height
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: buildDesignOption(
+                                  icon: Icons.schedule,
+                                  title: 'Envoyer le fichier ultérieurement',
+                                  isSelected: fileName == 'Envoyer le fichier ultérieurement',
+                                  onTap: () {
                                     setState(() {
-                                      fileName = result.files.single.name;
+                                      fileName = 'Envoyer le fichier ultérieurement';
                                       currentStep = 2;
                                     });
-                                  }
-                                },
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 150, // Control height
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: buildDesignOption(
+                                  icon: Icons.upload_file,
+                                  title: fileName ?? 'Joindre un fichier',
+                                  isSelected: fileName != null,
+                                  onTap: () async {
+                                    FilePickerResult? result = await FilePicker.platform.pickFiles();
+                                    if (result != null) {
+                                      setState(() {
+                                        fileName = result.files.single.name;
+                                        currentStep = 2;
+                                      });
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -141,179 +161,151 @@ class _OrderPageState extends State<Order> {
                         color: TColors.primary,
                       ),
                     ),
-                    content:
-                      Container(
-                        height: 200,
-                        width: 400,// Fix the height to make all boxes the same size
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: TColors.primaryBackground,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children:[
-                            Row(
+                    content: Container(
+                      height: 320,
+                      width: 400, // Fix the height to make all boxes the same size
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: TColors.primaryBackground,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                                Text(
-                                "Produit",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: TColors.darkGrey,
-                                  ),
-                                ),
-                              SizedBox(width: TSizes.sm,),
-                                Text(
-                                "Oriflamme géant 5 Mètre",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: TColors.textPrimary,
-                                  ),
-                                ),
-                            ],
-                            ),
-                          SizedBox(height: TSizes.sm,),
-                          Row(
-                          children: [
-                            Text(
-                            "Quantite",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: TColors.darkGrey,
-                              ),
-                            ),
-                            SizedBox(width: TSizes.sm,),
-                          Row(
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.remove),
-                              onPressed: () {
-                              setState(() {
-                              if (quantity > 1) {
-                              quantity--;
-                              }
-                              });
-                              },
-                              ),
-                            Text(
-                              quantity.toString(),
-                              style: TextStyle(fontSize: 12),
-                              ),
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                              setState(() {
-                              quantity++;
-                              });
-                              },
-                              ),
-                            ],
-                            ),
-                            ],
-                          ),
-                          SizedBox(height: TSizes.sm,),
-                          Row(
-                          children: [
-                            Text(
-                            "Prix Unitaire",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: TColors.darkGrey,
-                              ),
-                            ),
-                            SizedBox(width: TSizes.sm,),
-                            Text(
-                            "87600,00 DZD",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: TColors.textPrimary,
-                              ),
-                            ),
-                          ],
-                          ),
-                            SizedBox(height: TSizes.sm,),
-                          Row(
-                          children: [
-                            Text(
-                            "Totale",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: TColors.darkGrey,
-                              ),
-                            ),
-                            SizedBox(width: TSizes.sm,),
-                            Text(
-                            "87600,00 DZD",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: TColors.textPrimary,
-                              ),
-                            ),
-                          ],
-                          ),
-                            SizedBox(width: TSizes.lg,),
-                            BottomAppBar(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Add to cart logic
-                                    },
-                                    child: Text("Ajouter au panier"),
+                                  Text(
+                                    "Produit",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: TColors.darkGrey,
+                                    ),
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Checkout logic
-                                    },
-                                    child: Text("Passer à la caisse"),
+                                  SizedBox(height: TSizes.md,),
+                                  Text(
+                                    "Quantite",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: TColors.darkGrey,
+                                    ),
+                                  ),
+                                  SizedBox(height: TSizes.md,),
+                                  Text(
+                                    "Prix \nUnitaire",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: TColors.darkGrey,
+                                    ),
+                                  ),
+                                  SizedBox(height: TSizes.md,),
+                                  Text(
+                                    "Totale",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: TColors.darkGrey,
+                                    ),
                                   ),
                                 ],
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                      /*children: [
-                        Text(
-                          "Choisir la quantité",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: TColors.primary,
+                              SizedBox(width: TSizes.md,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Oriflamme géant 5 Mètre",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: TColors.textPrimary,
+                                    ),
+                                  ),
+                                  SizedBox(height: TSizes.md,),
+                                  Row(
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.remove),
+                                        onPressed: () {
+                                          setState(() {
+                                            if (quantity > 1) {
+                                              quantity--;
+                                            }
+                                          });
+                                        },
+                                      ),
+                                      Text(
+                                        quantity.toString(),
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.add),
+                                        onPressed: () {
+                                          setState(() {
+                                            quantity++;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: TSizes.md,),
+                                  Text(
+                                    "87600,00 DZD",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: TColors.textPrimary,
+                                    ),
+                                  ),
+                                  SizedBox(height: TSizes.md,),
+                                  Text(
+                                    "87600,00 DZD",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: TColors.textPrimary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.remove),
-                              onPressed: () {
-                                setState(() {
-                                  if (quantity > 1) {
-                                    quantity--;
-                                  }
-                                });
-                              },
-                            ),
-                            Text(
-                              quantity.toString(),
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                setState(() {
-                                  quantity++;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ],*/
+                          SizedBox(height: 40,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Add to cart logic
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: TColors.primary,
+                                  foregroundColor: TColors.secondary,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  textStyle: TextStyle(fontSize: 13),
+                                ),
+                                child: Text("Ajouter au panier"),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Checkout logic
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: TColors.primary,
+                                  foregroundColor: TColors.secondary,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  textStyle: TextStyle(fontSize: 13),
+                                ),
+                                child: Text("Passer à la caisse"),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                     state: StepState.indexed,
                     isActive: currentStep >= 2,
                   ),
@@ -323,27 +315,6 @@ class _OrderPageState extends State<Order> {
           ],
         ),
       ),
-      bottomNavigationBar: currentStep == 2
-          ? BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                // Add to cart logic
-              },
-              child: Text("Ajouter au panier"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Checkout logic
-              },
-              child: Text("Passer à la caisse"),
-            ),
-          ],
-        ),
-      )
-          : null,
     );
   }
 
