@@ -9,13 +9,21 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             Center(
               child: Column(
-                children: [Craousel()],
+                children: [
+                  const Craousel(),
+                  HorizontalCard(
+                    imageUrl:
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlxCy5HQLSzKst-QAHR0fAHqFf4K-XvCM2ow&s",
+                    price: 30000,
+                    productName: "product name",
+                  ),
+                ],
               ),
             ),
           ],

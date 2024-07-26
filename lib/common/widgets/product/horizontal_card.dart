@@ -43,7 +43,9 @@ class HorizontalCard extends StatelessWidget {
           Stack(children: [
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Image.network(imageUrl),
+              child: Image.network(
+                imageUrl,
+              ),
             ),
             hasDiscount
                 ? Positioned(

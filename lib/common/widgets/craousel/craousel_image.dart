@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class CraouselImage extends StatelessWidget {
   CraouselImage({
     super.key,
-    required imageNetwork,
+    required this.imageNetwork,
   });
 
-  String imageNetwork = "";
+  String imageNetwork;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CraouselImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20.0),
         child: Image.network(
-          'https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg',
+          imageNetwork,
           fit: BoxFit.cover,
         ),
       ),
