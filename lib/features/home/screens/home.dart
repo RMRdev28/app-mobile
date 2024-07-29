@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:plv/base_template.dart';
 import 'package:plv/common/widgets/craousel/craousel.dart';
-import 'package:plv/common/widgets/craousel/craousel_image.dart';
 
 import '../../../common/widgets/product/horizontal_card.dart';
 
@@ -9,7 +9,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseTemplate(
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:plv/base_template.dart';
+import 'package:plv/features/shop/model/product_model.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 
 class Order extends StatefulWidget {
-  const Order({super.key});
+  const Order({
+    super.key,
+    this.product,
+  });
+
+  final Product? product;
 
   @override
   _OrderPageState createState() => _OrderPageState();
@@ -15,15 +22,10 @@ class _OrderPageState extends State<Order> {
   String? fileName;
   int currentStep = 0;
   int quantity = 1;
-
+  Product get product => widget.product!;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Effectuer votre commande',
-            style: TextStyle(color: TColors.dark)),
-        backgroundColor: TColors.white,
-      ),
+    return BaseTemplate(
       body: Theme(
         data: ThemeData(
           primaryColor: TColors.primary,
@@ -347,27 +349,6 @@ class _OrderPageState extends State<Order> {
           ],
         ),
       ),
-      bottomNavigationBar: currentStep == 2
-          ? BottomAppBar(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Add to cart logic
-                    },
-                    child: const Text("Ajouter au panier"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Checkout logic
-                    },
-                    child: const Text("Passer à la caisse"),
-                  ),
-                ],
-              ),
-            )
-          : null,
     );
   }
 

@@ -1,34 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:get/get.dart';
+import 'package:plv/base_template.dart';
+import 'package:plv/features/auth/controller/auth_controller.dart';
+import 'package:plv/features/auth/model/user_model.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
+import 'package:plv/utils/device/device_utility.dart';
 // import 'package:plv/navigation.dart';
 import '../../auth/screens/login.dart';
 import 'update_profile.dart';
 import 'orders.dart';
 // import 'package:plv/utils/theme/theme.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
+
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  User? user;
+  final AuthController _authController = Get.put(AuthController());
+  @override
+  void initState() {
+    super.initState();
+    _fetchUser();
+  }
+
+  Future<void> _fetchUser() async {
+    User? fetchedUser = await TDeviceUtils().getUser();
+    setState(() {
+      user = fetchedUser;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final darkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-              color: darkMode ? TColors.white : TColors.dark),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        title: Text('Profile',
-            style: TextStyle(color: darkMode ? TColors.white : TColors.dark)),
-        backgroundColor: darkMode ? TColors.dark : TColors.white,
-      ),
+    return BaseTemplate(
       body: Padding(
         padding: const EdgeInsets.all(TSizes.md),
         child: Column(
@@ -40,7 +52,7 @@ class Profile extends StatelessWidget {
             ),
             const SizedBox(height: TSizes.sm),
             Text(
-              'Test',
+              user?.first_name ?? 'Test',
               style: TextStyle(
                 fontSize: TSizes.fontSizeLg,
                 fontWeight: FontWeight.bold,
@@ -48,7 +60,7 @@ class Profile extends StatelessWidget {
               ),
             ),
             Text(
-              'test@gmail.com',
+              user?.email ?? 'test@gmail.com',
               style: TextStyle(
                 fontSize: TSizes.fontSizeMd,
                 color: darkMode ? TColors.lightGrey : TColors.textSecondary,
@@ -67,7 +79,7 @@ class Profile extends StatelessWidget {
                   foregroundColor: TColors.black,
                   shape: const StadiumBorder(),
                 ),
-                child: Text('Modifier le profile'),
+                child: const Text('Modifier le profile'),
               ),
             ),
             const SizedBox(height: TSizes.lg),
@@ -127,7 +139,8 @@ class Profile extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                Get.to(() => const Login());
+                _authController.logout();
+                Get.offAll(() => const Login());
               },
               leading: Container(
                 width: 40,

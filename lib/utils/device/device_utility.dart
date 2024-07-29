@@ -1,14 +1,50 @@
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:plv/features/auth/model/user_model.dart';
 
 class TDeviceUtils {
   static void hideKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
+  }
+
+  static const String _tokenKey = 'auth_token';
+  static const String _userLoggedIn = 'user_auth';
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+
+  Future<void> saveToken(String token) async {
+    await _storage.write(key: _tokenKey, value: token);
+  }
+
+  Future<String?> getToken() async {
+    return await _storage.read(key: _tokenKey);
+  }
+
+  Future<void> removeToken() async {
+    await _storage.delete(key: _tokenKey);
+  }
+
+  Future<void> saveUser(User user) async {
+    String userJson = jsonEncode(user.toJson());
+    await _storage.write(key: 'user', value: userJson);
+  }
+
+  Future<User?> getUser() async {
+    String? userJson = await _storage.read(key: 'user');
+    if (userJson == null) {
+      return null;
+    }
+    Map<String, dynamic> userMap = jsonDecode(userJson);
+    return User.fromJson(userMap);
+  }
+
+  Future<void> deleteUser() async {
+    await _storage.delete(key: 'user');
   }
 
   static Future<void> setStatusBarColor(Color color) async {
@@ -28,7 +64,8 @@ class TDeviceUtils {
   }
 
   static void setFullScreen(bool enable) {
-    SystemChrome.setEnabledSystemUIMode(enable ? SystemUiMode.immersiveSticky : SystemUiMode.edgeToEdge);
+    SystemChrome.setEnabledSystemUIMode(
+        enable ? SystemUiMode.immersiveSticky : SystemUiMode.edgeToEdge);
   }
 
   static double getScreenHeight() {
@@ -66,7 +103,8 @@ class TDeviceUtils {
   }
 
   static Future<bool> isPhysicalDevice() async {
-    return defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
+    return defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS;
   }
 
   static void vibrate(Duration duration) {
@@ -74,7 +112,8 @@ class TDeviceUtils {
     Future.delayed(duration, () => HapticFeedback.vibrate());
   }
 
-  static Future<void> setPreferredOrientations(List<DeviceOrientation> orientations) async {
+  static Future<void> setPreferredOrientations(
+      List<DeviceOrientation> orientations) async {
     await SystemChrome.setPreferredOrientations(orientations);
   }
 
@@ -83,7 +122,8 @@ class TDeviceUtils {
   }
 
   static void showStatusBar() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
   }
 
   static Future<bool> hasInternetConnection() async {
@@ -110,7 +150,4 @@ class TDeviceUtils {
       throw 'Could not launch $url';
     }
   }
-
-
-// Add more device utility methods as per your specific requirements.
 }

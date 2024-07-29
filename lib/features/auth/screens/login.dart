@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:plv/features/auth/controller/auth_controller.dart';
+import 'package:plv/features/home/screens/home.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 import 'package:get/get.dart';
@@ -12,9 +14,30 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final AuthController _authController = Get.put(AuthController());
   late TextEditingController emailController;
   late TextEditingController passwordController;
   bool rememberMe = false;
+  bool isLoading = false;
+
+  Future<void> _login() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await _authController.login(
+          emailController.text, passwordController.text);
+      Get.to(() => const Home());
+    } catch (e) {
+      // Handle login error here
+      print('Login error: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -147,30 +170,47 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: TColors.secondary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      foregroundColor: TColors.black,
-                    ),
-                    child: Text('Se connecter'),
-                  ),
+                  isLoading
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: _login,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: TColors.secondary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            foregroundColor: TColors.black,
+                          ),
+                          child: const Text('Se connecter'),
+                        ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
                     children: [
-                      const Text("Vous n'avez pas de compte ? ",
-                          style: TextStyle(color: Colors.white)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Vous n'avez pas de compte ? ",
+                              style: TextStyle(color: Colors.white)),
+                          TextButton(
+                            onPressed: () {
+                              Get.to(() => const SignUp());
+                            },
+                            child: const Text(
+                              'S\'inscrire',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
                       TextButton(
                         onPressed: () {
-                          Get.to(() => const SignUp());
+                          Get.to(() => const Home());
                         },
                         child: const Text(
-                          'S\'inscrire',
+                          'Skip',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),

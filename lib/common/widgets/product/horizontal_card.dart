@@ -39,7 +39,7 @@ class HorizontalCard extends StatelessWidget {
         ],
       ),
       height: 150,
-      width: screenWidth * 0.8,
+      width: screenWidth * 0.9,
       child: Row(
         children: [
           Stack(children: [
@@ -128,7 +128,7 @@ class HorizontalCard extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.to(() => Order());
+                        Get.to(() => const Order());
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(

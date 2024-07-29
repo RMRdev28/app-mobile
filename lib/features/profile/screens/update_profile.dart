@@ -7,6 +7,8 @@ import 'package:plv/utils/constants/sizes.dart';
 import 'package:plv/utils/theme/theme.dart';
 
 class UpdateProfile extends StatefulWidget {
+  const UpdateProfile({super.key});
+
   @override
   _UpdateProfileState createState() => _UpdateProfileState();
 }
@@ -211,7 +213,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           foregroundColor: TColors.black,
                           shape: const StadiumBorder(),
                         ),
-                        child: Text('Modifier'),
+                        child: const Text('Modifier'),
                       ),
                     ),
                   ],
