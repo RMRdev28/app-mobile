@@ -234,9 +234,9 @@ class _OrderPageState extends State<Order> {
                           const SizedBox(
                             height: TSizes.sm,
                           ),
-                          const Row(
+                          Row(
                             children: [
-                              Text(
+                              const Text(
                                 "Prix Unitaire",
                                 style: TextStyle(
                                   fontSize: 12,
@@ -251,20 +251,18 @@ class _OrderPageState extends State<Order> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: TColors.secondary,
                                   foregroundColor: TColors.primary,
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                  textStyle: TextStyle(fontSize: 13),
-
-                              SizedBox(
-                                width: TSizes.sm,
-                              ),
-                              Text(
-                                "87600,00 DZD",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: TColors.textPrimary,
-
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  textStyle: const TextStyle(fontSize: 13),
                                 ),
-                              ),
+                                child: const Text(
+                                  "87600,00 DZD",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: TColors.textPrimary,
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                           const SizedBox(
