@@ -4,6 +4,8 @@ import 'package:plv/base_template.dart';
 import 'package:plv/features/shop/model/product_model.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
+import 'package:get/get.dart';
+import 'caisse.dart';
 
 class Order extends StatefulWidget {
   const Order({
@@ -232,9 +234,9 @@ class _OrderPageState extends State<Order> {
                           const SizedBox(
                             height: TSizes.sm,
                           ),
-                          const Row(
+                          Row(
                             children: [
-                              Text(
+                              const Text(
                                 "Prix Unitaire",
                                 style: TextStyle(
                                   fontSize: 12,
@@ -242,16 +244,25 @@ class _OrderPageState extends State<Order> {
                                   color: TColors.darkGrey,
                                 ),
                               ),
-                              SizedBox(
-                                width: TSizes.sm,
-                              ),
-                              Text(
-                                "87600,00 DZD",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: TColors.textPrimary,
+                              ElevatedButton(
+                                onPressed: () {
+                                  Get.to(() => Caisse());
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: TColors.secondary,
+                                  foregroundColor: TColors.primary,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  textStyle: const TextStyle(fontSize: 13),
                                 ),
-                              ),
+                                child: const Text(
+                                  "87600,00 DZD",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: TColors.textPrimary,
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                           const SizedBox(
