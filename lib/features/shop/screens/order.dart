@@ -258,8 +258,7 @@ class _OrderPageState extends State<Order> {
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: TColors.textPrimary,
-
-                                ),
+                                  ),
                               ),
                             ],
                           ),
