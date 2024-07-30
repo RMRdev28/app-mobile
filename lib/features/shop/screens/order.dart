@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:plv/base_template.dart';
+import 'package:plv/features/shop/model/product_model.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 import 'package:get/get.dart';
 import 'caisse.dart';
 
 class Order extends StatefulWidget {
+  const Order({
+    super.key,
+    this.product,
+  });
+
+  final Product? product;
+
   @override
   _OrderPageState createState() => _OrderPageState();
 }
@@ -15,31 +24,28 @@ class _OrderPageState extends State<Order> {
   String? fileName;
   int currentStep = 0;
   int quantity = 1;
-
+  Product get product => widget.product!;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Effectuer votre commande', style: TextStyle(color: TColors.dark)),
-        backgroundColor: TColors.white,
-      ),
+    return BaseTemplate(
       body: Theme(
         data: ThemeData(
           primaryColor: TColors.primary,
-          colorScheme: ColorScheme.light(primary: TColors.primary),
+          colorScheme: const ColorScheme.light(primary: TColors.primary),
         ),
         child: Column(
           children: [
             Expanded(
               child: Stepper(
-                controlsBuilder: (BuildContext context, ControlsDetails details) {
-                  return SizedBox.shrink();
+                controlsBuilder:
+                    (BuildContext context, ControlsDetails details) {
+                  return const SizedBox.shrink();
                 },
                 currentStep: currentStep,
                 onStepTapped: (step) => setState(() => currentStep = step),
                 steps: [
                   Step(
-                    title: Text(
+                    title: const Text(
                       "Choisissez votre Design",
                       style: TextStyle(
                         fontSize: 18,
@@ -49,45 +55,36 @@ class _OrderPageState extends State<Order> {
                     ),
                     content: Column(
                       children: [
-                        Container(
-                          height: 150, // Control height
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: buildDesignOption(
-                                  icon: Icons.insert_drive_file,
-                                  title: 'Fichier disponible',
-                                  onTap: () {
-                                    setState(() {
-                                      selectedDesign = 'Fichier disponible';
-                                      currentStep = 1;
-                                    });
-                                  },
-                                ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: buildDesignOption(
+                                icon: Icons.insert_drive_file,
+                                title: 'Fichier disponible',
+                                onTap: () {
+                                  setState(() {
+                                    selectedDesign = 'Fichier disponible';
+                                    currentStep = 1;
+                                  });
+                                },
                               ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 150, // Control height
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: buildDesignOption(
-                                  icon: Icons.design_services,
-                                  title: 'Conception par l\'équipe PLV Algérie',
-                                  subtitle: 'Plus 3200 DA',
-                                  onTap: () {
-                                    setState(() {
-                                      selectedDesign = 'Conception par l\'équipe PLV Algérie';
-                                      currentStep = 2; // Skip file step
-                                    });
-                                  },
-                                ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: buildDesignOption(
+                                icon: Icons.design_services,
+                                title: 'Conception par l\'équipe PLV Algérie',
+                                subtitle: 'Plus 3200 DA',
+                                onTap: () {
+                                  setState(() {
+                                    selectedDesign =
+                                        'Conception par l\'équipe PLV Algérie';
+                                    currentStep = 2; // Skip file step
+                                  });
+                                },
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -95,7 +92,7 @@ class _OrderPageState extends State<Order> {
                     isActive: currentStep >= 0,
                   ),
                   Step(
-                    title: Text(
+                    title: const Text(
                       "Sélectionnez une option pour le fichier",
                       style: TextStyle(
                         fontSize: 18,
@@ -105,49 +102,42 @@ class _OrderPageState extends State<Order> {
                     ),
                     content: Column(
                       children: [
-                        Container(
-                          height: 150, // Control height
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: buildDesignOption(
-                                  icon: Icons.schedule,
-                                  title: 'Envoyer le fichier ultérieurement',
-                                  isSelected: fileName == 'Envoyer le fichier ultérieurement',
-                                  onTap: () {
+                        Row(
+                          children: [
+                            Expanded(
+                              child: buildDesignOption(
+                                icon: Icons.schedule,
+                                title: 'Envoyer le fichier ultérieurement',
+                                isSelected: fileName ==
+                                    'Envoyer le fichier ultérieurement',
+                                onTap: () {
+                                  setState(() {
+                                    fileName =
+                                        'Envoyer le fichier ultérieurement';
+                                    currentStep = 2;
+                                  });
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: buildDesignOption(
+                                icon: Icons.upload_file,
+                                title: fileName ?? 'Joindre un fichier',
+                                isSelected: fileName != null,
+                                onTap: () async {
+                                  FilePickerResult? result =
+                                      await FilePicker.platform.pickFiles();
+                                  if (result != null) {
                                     setState(() {
-                                      fileName = 'Envoyer le fichier ultérieurement';
+                                      fileName = result.files.single.name;
                                       currentStep = 2;
                                     });
-                                  },
-                                ),
+                                  }
+                                },
                               ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 150, // Control height
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: buildDesignOption(
-                                  icon: Icons.upload_file,
-                                  title: fileName ?? 'Joindre un fichier',
-                                  isSelected: fileName != null,
-                                  onTap: () async {
-                                    FilePickerResult? result = await FilePicker.platform.pickFiles();
-                                    if (result != null) {
-                                      setState(() {
-                                        fileName = result.files.single.name;
-                                        currentStep = 2;
-                                      });
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -155,7 +145,7 @@ class _OrderPageState extends State<Order> {
                     isActive: currentStep >= 1,
                   ),
                   Step(
-                    title: Text(
+                    title: const Text(
                       "Complétez votre commande",
                       style: TextStyle(
                         fontSize: 18,
@@ -164,9 +154,10 @@ class _OrderPageState extends State<Order> {
                       ),
                     ),
                     content: Container(
-                      height: 320,
-                      width: 400, // Fix the height to make all boxes the same size
-                      padding: EdgeInsets.all(20),
+                      height: 200,
+                      width:
+                          400, // Fix the height to make all boxes the same size
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: TColors.primaryBackground,
                         borderRadius: BorderRadius.circular(10),
@@ -174,122 +165,84 @@ class _OrderPageState extends State<Order> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          const Row(
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Produit",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: TColors.darkGrey,
-                                    ),
-                                  ),
-                                  SizedBox(height: TSizes.md,),
-                                  Text(
-                                    "Quantite",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: TColors.darkGrey,
-                                    ),
-                                  ),
-                                  SizedBox(height: TSizes.md,),
-                                  Text(
-                                    "Prix \nUnitaire",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: TColors.darkGrey,
-                                    ),
-                                  ),
-                                  SizedBox(height: TSizes.md,),
-                                  Text(
-                                    "Totale",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: TColors.darkGrey,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                "Produit",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: TColors.darkGrey,
+                                ),
                               ),
-                              SizedBox(width: TSizes.md,),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Oriflamme géant 5 Mètre",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: TColors.textPrimary,
-                                    ),
+                              SizedBox(
+                                width: TSizes.sm,
+                              ),
+                              Text(
+                                "Oriflamme géant 5 Mètre",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: TColors.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: TSizes.sm,
+                          ),
+                          Row(
+                            children: [
+                              const Text(
+                                "Quantite",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: TColors.darkGrey,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: TSizes.sm,
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: const Icon(Icons.remove),
+                                    onPressed: () {
+                                      setState(() {
+                                        if (quantity > 1) {
+                                          quantity--;
+                                        }
+                                      });
+                                    },
                                   ),
-                                  SizedBox(height: TSizes.md,),
-                                  Row(
-                                    children: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.remove),
-                                        onPressed: () {
-                                          setState(() {
-                                            if (quantity > 1) {
-                                              quantity--;
-                                            }
-                                          });
-                                        },
-                                      ),
-                                      Text(
-                                        quantity.toString(),
-                                        style: TextStyle(fontSize: 14),
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.add),
-                                        onPressed: () {
-                                          setState(() {
-                                            quantity++;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: TSizes.md,),
                                   Text(
-                                    "87600,00 DZD",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: TColors.textPrimary,
-                                    ),
+                                    quantity.toString(),
+                                    style: const TextStyle(fontSize: 12),
                                   ),
-                                  SizedBox(height: TSizes.md,),
-                                  Text(
-                                    "87600,00 DZD",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: TColors.textPrimary,
-                                    ),
+                                  IconButton(
+                                    icon: const Icon(Icons.add),
+                                    onPressed: () {
+                                      setState(() {
+                                        quantity++;
+                                      });
+                                    },
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                          SizedBox(height: 40,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          const SizedBox(
+                            height: TSizes.sm,
+                          ),
+                          const Row(
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Add to cart logic
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: TColors.primary,
-                                  foregroundColor: TColors.secondary,
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                  textStyle: TextStyle(fontSize: 13),
+                              Text(
+                                "Prix Unitaire",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: TColors.darkGrey,
                                 ),
-                                child: Text("Ajouter au panier"),
                               ),
                               ElevatedButton(
                                 onPressed: () {
@@ -300,14 +253,106 @@ class _OrderPageState extends State<Order> {
                                   foregroundColor: TColors.primary,
                                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                   textStyle: TextStyle(fontSize: 13),
+
+                              SizedBox(
+                                width: TSizes.sm,
+                              ),
+                              Text(
+                                "87600,00 DZD",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: TColors.textPrimary,
+
                                 ),
-                                child: Text("Passer à la caisse"),
                               ),
                             ],
                           ),
+                          const SizedBox(
+                            height: TSizes.sm,
+                          ),
+                          const Row(
+                            children: [
+                              Text(
+                                "Totale",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: TColors.darkGrey,
+                                ),
+                              ),
+                              SizedBox(
+                                width: TSizes.sm,
+                              ),
+                              Text(
+                                "87600,00 DZD",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: TColors.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: TSizes.lg,
+                          ),
+                          BottomAppBar(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Add to cart logic
+                                  },
+                                  child: const Text("Ajouter au panier"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Checkout logic
+                                  },
+                                  child: const Text("Passer à la caisse"),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
+                    /*children: [
+                        Text(
+                          "Choisir la quantité",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: TColors.primary,
+                          ),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  if (quantity > 1) {
+                                    quantity--;
+                                  }
+                                });
+                              },
+                            ),
+                            Text(
+                              quantity.toString(),
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  quantity++;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ],*/
                     state: StepState.indexed,
                     isActive: currentStep >= 2,
                   ),
@@ -331,29 +376,31 @@ class _OrderPageState extends State<Order> {
       onTap: onTap,
       child: Container(
         height: 200, // Fix the height to make all boxes the same size
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isSelected ? TColors.primaryBackground : TColors.primaryBackground,
+          color: isSelected
+              ? TColors.primaryBackground
+              : TColors.primaryBackground,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 40),
-            SizedBox(height: TSizes.sm),
+            const SizedBox(height: TSizes.sm),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: TSizes.fontSizeSm,
                 color: TColors.textPrimary,
               ),
               textAlign: TextAlign.center,
             ),
             if (subtitle != null) ...[
-              SizedBox(height: TSizes.sm),
+              const SizedBox(height: TSizes.sm),
               Text(
                 subtitle,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 11,
                   color: TColors.darkerGrey,
                 ),

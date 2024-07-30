@@ -2,20 +2,28 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:plv/features/auth/controller/auth_controller.dart';
+import 'package:plv/features/auth/model/register_model.dart';
+import 'package:plv/features/home/screens/home.dart';
 import 'package:plv/utils/constants/colors.dart';
-import 'package:plv/utils/constants/sizes.dart';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+
 import 'login.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  const SignUp({super.key});
 
   @override
   _SignUpState createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
-  late TextEditingController firstNameController;
-  late TextEditingController lastNameController;
+  String _selectedOption = 'client';
+  String? _fileName;
+  PlatformFile? _selectedFile;
+
+  late TextEditingController nameController;
   late TextEditingController mobileController;
   late TextEditingController addressController;
   late TextEditingController emailController;
@@ -27,59 +35,62 @@ class _SignUpState extends State<SignUp> {
   String? selectedWilaya;
   String? selectedCommune;
 
+  void _handleRadioValueChange(String? value) {
+    setState(() {
+      _selectedOption = value!;
+      if (_selectedOption == 'Option 2') {
+        _fileName = null;
+      }
+    });
+  }
+
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      setState(() {
+        _fileName = result.files.single.name;
+        _selectedFile = result.files.single;
+      });
+    }
+  }
+
+  Future<bool> _register() async {
+    if (_selectedFile == null) return false;
+
+    // Convert file to base64
+    String base64File =
+        base64Encode(await File(_selectedFile!.path!).readAsBytes());
+
+    Register reg = new Register(
+        email: emailController.text,
+        password: passwordController.text,
+        first_name: nameController.text,
+        phone: mobileController.text,
+        typeUser: _selectedOption,
+        file: base64File);
+
+    AuthController authController = Get.put(AuthController());
+    return await authController.register(reg);
+  }
+
   @override
   void initState() {
     super.initState();
-    firstNameController = TextEditingController();
-    lastNameController = TextEditingController();
+    nameController = TextEditingController();
     mobileController = TextEditingController();
     addressController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
-
-    loadWilayas().then((data) {
-      setState(() {
-        wilayas = data;
-      });
-      print("Wilayas loaded: $wilayas");
-    });
-    loadCommunes().then((data) {
-      setState(() {
-        communes = data;
-      });
-      print("Communes loaded: $communes");
-    });
   }
 
   @override
   void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
+    nameController.dispose();
     mobileController.dispose();
     addressController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  Future<List<dynamic>> loadWilayas() async {
-    final String response = await rootBundle.loadString('assets/AlgeriaCities/Wilaya_Of_Algeria.json');
-    print("Wilayas JSON response: $response");
-    return json.decode(response);
-  }
-
-  Future<List<dynamic>> loadCommunes() async {
-    final String response = await rootBundle.loadString('assets/AlgeriaCities/Commune_Of_Algeria.json');
-    print("Communes JSON response: $response");
-    return json.decode(response);
-  }
-
-  void filterCommunes(String wilayaId) {
-    setState(() {
-      filteredCommunes = communes.where((commune) => commune['wilaya_id'] == wilayaId).toList();
-      selectedCommune = null; // Reset selectedCommune when wilaya changes
-    });
-    print("Filtered Communes for Wilaya ID $wilayaId: $filteredCommunes");
   }
 
   @override
@@ -90,19 +101,22 @@ class _SignUpState extends State<SignUp> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Center(
               child: Column(
                 children: [
                   Image.asset("assets/images/logo.png", height: 100),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Inscription',
-                    style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     'Créez votre compte',
                     style: TextStyle(fontSize: 16.0, color: Colors.white),
                     textAlign: TextAlign.center,
@@ -115,237 +129,184 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
-                    controller: firstNameController,
+                    controller: nameController,
                     decoration: InputDecoration(
-                      labelText: 'Prénom',
-                      prefixIcon: Icon(Icons.person, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      labelText: 'Nom et Prénom',
+                      prefixIcon:
+                          const Icon(Icons.person, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: lastNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Nom',
-                      prefixIcon: Icon(Icons.person, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: mobileController,
                     decoration: InputDecoration(
                       labelText: 'Mobile',
-                      prefixIcon: Icon(Icons.phone, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon:
+                          const Icon(Icons.phone, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: addressController,
-                    decoration: InputDecoration(
-                      labelText: 'Adresse',
-                      prefixIcon: Icon(Icons.home, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Wilaya',
-                      prefixIcon: Icon(Icons.location_city, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    items: wilayas.map<DropdownMenuItem<String>>((dynamic value) {
-                      return DropdownMenuItem<String>(
-                        value: value['id'],
-                        child: Text(value['name']),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedWilaya = newValue;
-                        filterCommunes(newValue!);
-                      });
-                    },
-                    value: selectedWilaya,
-                  ),
-                  SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Commune',
-                      prefixIcon: Icon(Icons.location_on, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    items: filteredCommunes.map<DropdownMenuItem<String>>((dynamic value) {
-                      return DropdownMenuItem<String>(
-                        value: value['id'],
-                        child: Text(value['name']),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedCommune = newValue;
-                      });
-                    },
-                    value: selectedCommune,
-                  ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      prefixIcon: Icon(Icons.email, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon:
+                          const Icon(Icons.email, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Mot de passe',
-                      prefixIcon: Icon(Icons.lock, color: TColors.softGrey),
-                      labelStyle: TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle: TextStyle(color: TColors.softGrey),
+                      prefixIcon:
+                          const Icon(Icons.lock, color: TColors.softGrey),
+                      labelStyle: const TextStyle(color: TColors.softGrey),
+                      floatingLabelStyle:
+                          const TextStyle(color: TColors.softGrey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: TColors.softGrey),
+                        borderSide: const BorderSide(color: TColors.softGrey),
                       ),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.black),
                     obscureText: true,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                  const Text("Type Utilisateur",
+                      style: TextStyle(
+                          color: TColors.softGrey,
+                          fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ListTile(
+                        title: const Text(
+                          'Departement Marketing Communication',
+                          style: TextStyle(color: TColors.softGrey),
+                        ),
+                        leading: Radio<String>(
+                          fillColor: WidgetStateProperty.all(Colors.white),
+                          value: 'client',
+                          groupValue: _selectedOption,
+                          onChanged: _handleRadioValueChange,
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text(
+                          'professionnel Communication Publicité',
+                          style: TextStyle(color: TColors.softGrey),
+                        ),
+                        leading: Radio<String>(
+                          fillColor: WidgetStateProperty.all(Colors.white),
+                          value: 'fournisseur_non_valide',
+                          groupValue: _selectedOption,
+                          onChanged: _handleRadioValueChange,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      _selectedOption == "fournisseur_non_valide"
+                          ? ElevatedButton(
+                              onPressed: _pickFile,
+                              child: const Text('Upload File'),
+                            )
+                          : const SizedBox(),
+                      if (_fileName != null) ...[
+                        const SizedBox(height: 20),
+                        Text('Selected file: $_fileName'),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
-                    child: Text('S\'inscrire'),
+                    onPressed: () {
+                      if (_register() == true) {
+                        Get.to(const Home());
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TColors.secondary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                       foregroundColor: TColors.black,
                     ),
+                    child: const Text('S\'inscrire'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Déjà un compte ? ", style: TextStyle(color: Colors.white)),
+                      const Text("Déjà un compte ? ",
+                          style: TextStyle(color: Colors.white)),
                       TextButton(
                         onPressed: () {
-                          Get.to(() => Login());
+                          Get.to(() => const Login());
                         },
-                        child: Text(
+                        child: const Text(
                           'Connectez-vous',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),
                     ],

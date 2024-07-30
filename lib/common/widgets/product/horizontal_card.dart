@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plv/common/widgets/cicle_icon.dart';
 import 'package:plv/utils/constants/colors.dart';
 import '../../../features/shop/screens/order.dart';
 import 'package:get/get.dart';
@@ -40,13 +39,15 @@ class HorizontalCard extends StatelessWidget {
         ],
       ),
       height: 150,
-      width: screenWidth * 0.8,
+      width: screenWidth * 0.9,
       child: Row(
         children: [
           Stack(children: [
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Image.network(imageUrl),
+              child: Image.network(
+                imageUrl,
+              ),
             ),
             hasDiscount
                 ? Positioned(
@@ -109,14 +110,14 @@ class HorizontalCard extends StatelessWidget {
                     ),
                     hasOldPrice
                         ? Text(
-                      "$oldPrice DZD",
-                      style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.black,
-                          decoration: TextDecoration.lineThrough,
-                          decorationColor: TColors.secondary,
-                          decorationThickness: 2),
-                    )
+                            "$oldPrice DZD",
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor: TColors.secondary,
+                                decorationThickness: 2),
+                          )
                         : const SizedBox(height: 15),
                   ],
                 ),
@@ -127,7 +128,7 @@ class HorizontalCard extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.to(() => Order());
+                        Get.to(() => const Order());
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
