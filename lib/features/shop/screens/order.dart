@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
+import 'package:get/get.dart';
+import 'caisse.dart';
 
 class Order extends StatefulWidget {
   @override
@@ -291,11 +293,11 @@ class _OrderPageState extends State<Order> {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  // Checkout logic
+                                  Get.to(() => Caisse());
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: TColors.primary,
-                                  foregroundColor: TColors.secondary,
+                                  backgroundColor: TColors.secondary,
+                                  foregroundColor: TColors.primary,
                                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                   textStyle: TextStyle(fontSize: 13),
                                 ),
