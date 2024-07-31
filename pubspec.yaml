@@ -42,9 +42,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  webview_flutter_plus: ^0.3.0
   iconsax: ^0.0.8
   firebase_core: ^2.15.1 # Or your preferred version
   firebase_storage: ^11.2.11 # Or your preferred version
+
 
   # State Management
   get: ^4.6.5
@@ -100,6 +102,7 @@ flutter:
     - assets/images/on_boarding_images/
     - assets/AlgeriaCities/Commune_Of_Algeria.json
     - assets/AlgeriaCities/Wilaya_Of_Algeria.json
+    - assets/webpages/
 
   #--------------- LOCAL FONTS ------------------#
   fonts:

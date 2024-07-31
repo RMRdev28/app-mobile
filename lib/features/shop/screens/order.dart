@@ -69,7 +69,11 @@ class _OrderPageState extends State<Order> {
                                 },
                               ),
                             ),
-                            const SizedBox(width: 10),
+    ],
+    ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
                             Expanded(
                               child: buildDesignOption(
                                 icon: Icons.design_services,
@@ -119,7 +123,10 @@ class _OrderPageState extends State<Order> {
                                 },
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            ],
+    ),                            const SizedBox(height: 10),
+                        Row(
+                          children: [
                             Expanded(
                               child: buildDesignOption(
                                 icon: Icons.upload_file,
@@ -154,9 +161,8 @@ class _OrderPageState extends State<Order> {
                       ),
                     ),
                     content: Container(
-                      height: 200,
-                      width:
-                          400, // Fix the height to make all boxes the same size
+                      height: 320,
+                      width: 400, // Fix the height to make all boxes the same size
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: TColors.primaryBackground,
@@ -234,9 +240,9 @@ class _OrderPageState extends State<Order> {
                           const SizedBox(
                             height: TSizes.sm,
                           ),
-                          const Row(
+                          Row(
                             children: [
-                              Text(
+                              const Text(
                                 "Prix Unitaire",
                                 style: TextStyle(
                                   fontSize: 12,
@@ -244,20 +250,10 @@ class _OrderPageState extends State<Order> {
                                   color: TColors.darkGrey,
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Get.to(() => Caisse());
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: TColors.secondary,
-                                  foregroundColor: TColors.primary,
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                  textStyle: TextStyle(fontSize: 13),
-
-                              SizedBox(
+                              const SizedBox(
                                 width: TSizes.sm,
                               ),
-                              Text(
+                              const Text(
                                 "87600,00 DZD",
                                 style: TextStyle(
                                   fontSize: 12,
@@ -293,27 +289,37 @@ class _OrderPageState extends State<Order> {
                             ],
                           ),
                           const SizedBox(
-                            width: TSizes.lg,
+                            height: 40,
                           ),
-                          BottomAppBar(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // Add to cart logic
-                                  },
-                                  child: const Text("Ajouter au panier"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Add to cart logic
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: TColors.primary,
+                                  foregroundColor: TColors.secondary,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  textStyle: TextStyle(fontSize: 13),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // Checkout logic
-                                  },
-                                  child: const Text("Passer à la caisse"),
+                                child: Text("Ajouter au panier"),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Checkout logic
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: TColors.secondary,
+                                  foregroundColor: TColors.primary,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  textStyle: TextStyle(fontSize: 13),
                                 ),
-                              ],
-                            ),
-                          )
+                                child: Text("Passer à la caisse"),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
