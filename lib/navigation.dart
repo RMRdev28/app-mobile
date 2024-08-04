@@ -41,10 +41,11 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final selectedIndex = 0.obs;
   RxList<Widget> pages = RxList<Widget>();
+  List<String> routes = ['/home', '/shop', '/favorite', 'profile'];
 
   @override
   void onInit() {
-    print("init");
+    // print("init");
     super.onInit();
     _buildPages();
   }
@@ -73,6 +74,8 @@ class NavigationController extends GetxController {
 
   void changePage(int index) {
     selectedIndex.value = index;
-    Get.to(pages[index]);
+    Get.toNamed(
+      routes[index],
+    );
   }
 }

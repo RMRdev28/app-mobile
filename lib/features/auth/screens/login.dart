@@ -158,13 +158,17 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       const Text('Se souvenir de moi',
-                          style: TextStyle(color: Colors.white)),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold)),
                       const Spacer(),
                       TextButton(
                         onPressed: () {},
                         child: const Text('Mot de passe oublié',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                fontSize: 12,
                                 color: Colors.white)),
                       ),
                     ],

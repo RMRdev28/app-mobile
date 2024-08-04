@@ -4,7 +4,7 @@ class Register {
   final String password;
   final String email;
   final String typeUser;
-  final String file;
+  final String? file;
 
   Register({
     required this.first_name,
@@ -12,7 +12,7 @@ class Register {
     required this.password,
     required this.email,
     required this.typeUser,
-    required this.file,
+    this.file,
   });
 
   Map<String, dynamic> toJson() {

@@ -568,28 +568,32 @@ class Paypal extends StatelessWidget {
           // Replace this with your captcha widget
           Text('Captcha here'),
           Container(
-            height: 300,  // Ajustez la hauteur selon vos besoins
-            child: WebViewPlus(
-              javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (controller) {
-                controller.loadUrl("assets/webpages/index.html");
-              },
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: TColors.primaryBackground,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: TColors.primary.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
             ),
-          ),
-          SizedBox(height: 10.0),
-          Row(
-            children: [
-              Checkbox(
-                value: true, // Update this as needed
-                onChanged: (bool? value) {
-                  // Handle checkbox change
-                },
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: Text(
-                  "J'accepte les Conditions générales de vente",
-                  style: TextStyle(fontSize: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Image.asset('assets/images/paypal.jpg', height: 40.0),
+                    SizedBox(width: 10.0),
+                    Text(
+                      'Paye avec Paypal',
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ],
