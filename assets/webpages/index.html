@@ -2,22 +2,39 @@
 <html>
 <head>
     <title>reCAPTCHA</title>
-    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcmTBwqAAAAAGaXRbXFR0JbBaAQ7W_pPIy6rrr7"></script>
-</head>
-<body style='background-color: aqua;'>
-<div style='height: 60px;'></div>
-<form action="?" method="POST">
-    <div class="g-recaptcha"
-         data-sitekey="6LcmTBwqAAAAAGaXRbXFR0JbBaAQ7W_pPIy6rrr7"
-         data-callback="captchaCallback"></div>
 
-</form>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        /* Ajout de styles CSS pour agrandir et centrer la boîte de captcha */
+        .g-recaptcha {
+            transform: scale(4); /* Ajustez la valeur pour agrandir ou réduire la boîte */
+            transform-origin: 0 0; /* Assurez-vous que la boîte reste alignée en haut à gauche */
+            margin: 0 auto; /* Centrez la boîte horizontalement */
+        }
+        /* Styles pour centrer le reCAPTCHA en bas de la page */
+        .recaptcha-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* Positionne l'élément vers le bas */
+            height: 100vh; /* Utilise toute la hauteur de la fenêtre */
+            padding-bottom: 800px;
+            padding-right:620px;/* Ajoute un padding en bas pour ajuster la position */
+        }
+    </style>
+</head>
+<body style='background-color: aqua; margin: 0;'>
+<div class="recaptcha-container">
+    <form action="?" method="POST">
+        <div class="g-recaptcha"
+             data-sitekey="6Lf5iRwqAAAAAEzyXWN6KTbU53jBpiJTiUx2PTep"
+             data-callback="captchaCallback"></div>
+    </form>
+</div>
 <script>
-    function captchaCallback(response){
-      //console.log(response);
-      if(typeof Captcha!=="undefined"){
-        Captcha.postMessage(response);
-      }
+    function captchaCallback(response) {
+        if (typeof Captcha !== "undefined") {
+            Captcha.postMessage(response);
+        }
     }
 </script>
 </body>
