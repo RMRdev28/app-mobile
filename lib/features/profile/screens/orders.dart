@@ -1,69 +1,152 @@
 import 'package:flutter/material.dart';
 import 'package:plv/utils/constants/colors.dart';
+import 'package:plv/utils/constants/sizes.dart';
+import 'package:plv/base_template.dart';
+import 'details.dart';
+import 'package:get/get.dart';
 
-class OrdersPage extends StatelessWidget {
-  const OrdersPage({super.key});
-
+class Orders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Example data, replace with your actual data fetching logic
-    final orders = [
-      {
-        'orderNumber': '123456',
-        'date': '2023-06-30',
-        'totalAmount': '100.00',
-        'status': 'En cours',
-        'trackingCode': 'ABC123'
-      },
-      {
-        'orderNumber': '654321',
-        'date': '2023-06-29',
-        'totalAmount': '250.00',
-        'status': 'Livré',
-        'trackingCode': 'XYZ789'
-      },
-    ];
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mes achats'),
-        backgroundColor: TColors.primary,
-      ),
-      body: Column(
-        children: [
-          const TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.shopping_bag), text: 'Mes achats'),
-              Tab(icon: Icon(Icons.local_shipping), text: 'Suivi colis'),
-              Tab(icon: Icon(Icons.settings), text: 'Paramètres'),
-            ],
-            labelColor: TColors.primary,
-            unselectedLabelColor: Colors.grey,
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('N° COMMANDE')),
-                  DataColumn(label: Text('DATE COMMANDE')),
-                  DataColumn(label: Text('MONTANT TOTAL')),
-                  DataColumn(label: Text('STATUS')),
-                  DataColumn(label: Text('TRACKING CODE')),
-                ],
-                rows: orders.map((order) {
-                  return DataRow(cells: [
-                    DataCell(Text(order['orderNumber']!)),
-                    DataCell(Text(order['date']!)),
-                    DataCell(Text(order['totalAmount']!)),
-                    DataCell(Text(order['status']!)),
-                    DataCell(Text(order['trackingCode']!)),
-                  ]);
-                }).toList(),
+    return BaseTemplate(
+      body: Padding(
+        padding: const EdgeInsets.all(TSizes.md),
+        child:Container(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Mes achats',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: TColors.primary,
+                ),
               ),
-            ),
+              SizedBox(height: TSizes.md),
+              OrderTablePage(),
+            ],
           ),
-        ],
+        ),
       ),
     );
+  }
+}
+
+class OrderTablePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: IntrinsicWidth(
+          child: DataTable(
+            headingRowColor: MaterialStateProperty.all(TColors.primaryBackground),
+            columns: [
+              DataColumn(label: Flexible(
+                child: Text('Order Number', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: TColors.textSecondary)),
+              )),
+              DataColumn(label: Flexible(
+                child: Text('Date de Commande', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: TColors.textSecondary)),
+              )),
+              DataColumn(label: Flexible(
+                child: Text('Total', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: TColors.textSecondary)),
+              )),
+              DataColumn(label: Flexible(
+                child: Text('Statut', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: TColors.textSecondary)),
+              )),
+              DataColumn(label: Flexible(
+                child: Text('Tracking Code', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: TColors.textSecondary)),
+              )),
+            ],
+            rows: [
+              DataRow(cells: [
+                DataCell(Text('903')),
+                DataCell(Text('04/08/2024\n18:41:11')),
+                DataCell(Text('142,800.00\nDA')),
+                DataCell(Text('En cours de confirmation')),
+                DataCell(
+                  Row(
+                    children: [
+                      Expanded(child: Text('Tracking is Waiting Order Approval From Admin')),
+                      SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Add your onPressed code here!
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: TColors.primary,
+                          foregroundColor: TColors.secondary,
+                          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: Text('Voir les détails', style: TextStyle(fontSize: 13),),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+              DataRow(cells: [
+                DataCell(Text('903')),
+                DataCell(Text('04/08/2024\n18:41:11')),
+                DataCell(Text('142,800.00\nDA')),
+                DataCell(Text('En cours de confirmation')),
+                DataCell(
+                  Row(
+                    children: [
+                      Expanded(child: Text('Tracking is Waiting Order Approval From Admin')),
+                      SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Add your onPressed code here!
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: TColors.primary,
+                          foregroundColor: TColors.secondary,
+                          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: Text('Voir les détails', style: TextStyle(fontSize: 13),),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+              DataRow(cells: [
+                DataCell(Text('903')),
+                DataCell(Text('04/08/2024\n18:41:11')),
+                DataCell(Text('142,800.00\nDA')),
+                DataCell(Text('En cours de confirmation')),
+                DataCell(
+                  Row(
+                    children: [
+                      Expanded(child: Text(' Order Approval From Admin')),
+                      SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.to(() => Details());
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: TColors.primary,
+                          foregroundColor: TColors.secondary,
+                          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: Text('Voir les détails', style: TextStyle(fontSize: 13),),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+            ],
+          ),
+        ),
+      );
   }
 }

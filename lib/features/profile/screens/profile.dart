@@ -85,7 +85,7 @@ class _ProfileState extends State<Profile> {
             const SizedBox(height: TSizes.lg),
             ListTile(
               onTap: () {
-                Get.to(() => const OrdersPage());
+                Get.to(() => Orders());
               },
               leading: Container(
                 width: 40,
