@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "502449646798",
+    "project_id": "plv-algerie-test-cd400",
+    "storage_bucket": "plv-algerie-test-cd400.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502449646798:android:f532503254a96e2de1749f",
+        "android_client_info": {
+          "package_name": "plv.algerie.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWIcVofOTMBS2veB_6ENJONisfRVWb8mU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

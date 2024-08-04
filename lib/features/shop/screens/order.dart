@@ -5,6 +5,8 @@ import 'package:plv/features/shop/model/product_model.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 import 'package:get/get.dart';
+import 'package:plv/utils/device/device_utility.dart';
+import 'package:plv/utils/helpers/helper_functions.dart';
 import 'caisse.dart';
 
 class Order extends StatefulWidget {
@@ -27,6 +29,7 @@ class _OrderPageState extends State<Order> {
   Product get product => widget.product!;
   @override
   Widget build(BuildContext context) {
+    final darkMode = THelperFunctions.isDarkMode(context);
     return BaseTemplate(
       body: Theme(
         data: ThemeData(
@@ -45,12 +48,12 @@ class _OrderPageState extends State<Order> {
                 onStepTapped: (step) => setState(() => currentStep = step),
                 steps: [
                   Step(
-                    title: const Text(
+                    title: Text(
                       "Choisissez votre Design",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: TColors.primary,
+                        color: darkMode ? TColors.white : TColors.primary,
                       ),
                     ),
                     content: Column(
@@ -69,8 +72,8 @@ class _OrderPageState extends State<Order> {
                                 },
                               ),
                             ),
-    ],
-    ),
+                          ],
+                        ),
                         const SizedBox(height: 10),
                         Row(
                           children: [
@@ -96,12 +99,12 @@ class _OrderPageState extends State<Order> {
                     isActive: currentStep >= 0,
                   ),
                   Step(
-                    title: const Text(
+                    title: Text(
                       "Sélectionnez une option pour le fichier",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: TColors.primary,
+                        color: darkMode ? TColors.white : TColors.primary,
                       ),
                     ),
                     content: Column(
@@ -123,8 +126,9 @@ class _OrderPageState extends State<Order> {
                                 },
                               ),
                             ),
-                            ],
-    ),                            const SizedBox(height: 10),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
                             Expanded(
@@ -152,17 +156,18 @@ class _OrderPageState extends State<Order> {
                     isActive: currentStep >= 1,
                   ),
                   Step(
-                    title: const Text(
+                    title: Text(
                       "Complétez votre commande",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: TColors.primary,
+                        color: darkMode ? TColors.white : TColors.primary,
                       ),
                     ),
                     content: Container(
                       height: 320,
-                      width: 400, // Fix the height to make all boxes the same size
+                      width:
+                          400, // Fix the height to make all boxes the same size
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: TColors.primaryBackground,
@@ -240,9 +245,9 @@ class _OrderPageState extends State<Order> {
                           const SizedBox(
                             height: TSizes.sm,
                           ),
-                          Row(
+                          const Row(
                             children: [
-                              const Text(
+                              Text(
                                 "Prix Unitaire",
                                 style: TextStyle(
                                   fontSize: 12,
@@ -250,15 +255,15 @@ class _OrderPageState extends State<Order> {
                                   color: TColors.darkGrey,
                                 ),
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: TSizes.sm,
                               ),
-                              const Text(
+                              Text(
                                 "87600,00 DZD",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: TColors.textPrimary,
-                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -291,28 +296,28 @@ class _OrderPageState extends State<Order> {
                             height: 40,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ElevatedButton(
-                                onPressed: () {
-                                  // Add to cart logic
-                                },
+                                onPressed: () {},
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: TColors.primary,
                                   foregroundColor: TColors.secondary,
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 5),
                                   textStyle: TextStyle(fontSize: 13),
                                 ),
                                 child: Text("Ajouter au panier"),
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  // Checkout logic
+                                  Get.to(() => Caisse());
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: TColors.secondary,
                                   foregroundColor: TColors.primary,
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 5),
                                   textStyle: TextStyle(fontSize: 13),
                                 ),
                                 child: Text("Passer à la caisse"),

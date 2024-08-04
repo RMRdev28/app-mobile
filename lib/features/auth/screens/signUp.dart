@@ -22,6 +22,7 @@ class _SignUpState extends State<SignUp> {
   String _selectedOption = 'client';
   String? _fileName;
   PlatformFile? _selectedFile;
+  bool _isLoading = false;
 
   late TextEditingController nameController;
   late TextEditingController mobileController;
@@ -54,14 +55,17 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  Future<bool> _register() async {
-    if (_selectedFile == null) return false;
-
+  Future<void> _register() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String? base64File;
     // Convert file to base64
-    String base64File =
-        base64Encode(await File(_selectedFile!.path!).readAsBytes());
+    if (_selectedFile != null) {
+      base64File = base64Encode(await File(_selectedFile!.path!).readAsBytes());
+    }
 
-    Register reg = new Register(
+    Register reg = Register(
         email: emailController.text,
         password: passwordController.text,
         first_name: nameController.text,
@@ -70,7 +74,17 @@ class _SignUpState extends State<SignUp> {
         file: base64File);
 
     AuthController authController = Get.put(AuthController());
-    return await authController.register(reg);
+    bool success = await authController.register(reg);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (success) {
+      Get.to(const Home());
+    } else {
+      // Handle registration failure (e.g., show an error message)
+    }
   }
 
   @override
@@ -245,7 +259,7 @@ class _SignUpState extends State<SignUp> {
                           style: TextStyle(color: TColors.softGrey),
                         ),
                         leading: Radio<String>(
-                          fillColor: WidgetStateProperty.all(Colors.white),
+                          fillColor: WidgetStateProperty.all(TColors.secondary),
                           value: 'client',
                           groupValue: _selectedOption,
                           onChanged: _handleRadioValueChange,
@@ -257,7 +271,7 @@ class _SignUpState extends State<SignUp> {
                           style: TextStyle(color: TColors.softGrey),
                         ),
                         leading: Radio<String>(
-                          fillColor: WidgetStateProperty.all(Colors.white),
+                          fillColor: WidgetStateProperty.all(TColors.secondary),
                           value: 'fournisseur_non_valide',
                           groupValue: _selectedOption,
                           onChanged: _handleRadioValueChange,
@@ -267,7 +281,7 @@ class _SignUpState extends State<SignUp> {
                       _selectedOption == "fournisseur_non_valide"
                           ? ElevatedButton(
                               onPressed: _pickFile,
-                              child: const Text('Upload File'),
+                              child: const Text('Register Commerce'),
                             )
                           : const SizedBox(),
                       if (_fileName != null) ...[
@@ -278,11 +292,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      if (_register() == true) {
-                        Get.to(const Home());
-                      }
-                    },
+                    onPressed: _isLoading ? null : _register,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TColors.secondary,
                       shape: RoundedRectangleBorder(
@@ -291,7 +301,12 @@ class _SignUpState extends State<SignUp> {
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       foregroundColor: TColors.black,
                     ),
-                    child: const Text('S\'inscrire'),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          )
+                        : const Text('S\'inscrire'),
                   ),
                   const SizedBox(height: 20),
                   Row(
