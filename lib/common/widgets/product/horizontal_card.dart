@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:plv/features/profile/screens/orders.dart';
 import 'package:plv/utils/constants/colors.dart';
 import '../../../features/shop/screens/order.dart';
 import 'package:get/get.dart';
+import '../../../features/profile/screens/orders.dart';
 
 // ignore: must_be_immutable
 class HorizontalCard extends StatelessWidget {
@@ -128,7 +130,7 @@ class HorizontalCard extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.to(() => const Order());
+                        Get.to(() => Orders());
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
