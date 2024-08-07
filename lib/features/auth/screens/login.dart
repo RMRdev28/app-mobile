@@ -19,15 +19,39 @@ class _LoginState extends State<Login> {
   late TextEditingController passwordController;
   bool rememberMe = false;
   bool isLoading = false;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>(); // Ajout de la clé globale
+
+  // Fonction de validation pour l'email
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre email';
+    }
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Veuillez entrer un email valide';
+    }
+    return null;
+  }
+
+  // Fonction de validation pour le mot de passe
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre mot de passe';
+    }
+    return null;
+  }
 
   Future<void> _login() async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
     setState(() {
       isLoading = true;
     });
 
     try {
-      await _authController.login(
-          emailController.text, passwordController.text);
+      await _authController.login(emailController.text, passwordController.text);
       Get.to(() => const Home());
     } catch (e) {
       // Handle login error here
@@ -58,173 +82,173 @@ class _LoginState extends State<Login> {
     return Scaffold(
       backgroundColor: TColors.primary,
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 40),
-            Center(
-              child: Column(
-                children: [
-                  Image.asset("assets/images/logo.png", height: 100),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Connexion',
-                    style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Connectez-vous à votre compte',
-                    style: TextStyle(fontSize: 16.0, color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+        child: Form( // Utilisation du widget Form avec la clé globale
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 40),
+              Center(
+                child: Column(
+                  children: [
+                    Image.asset("assets/images/logo.png", height: 100),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Connexion',
+                      style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Connectez-vous à votre compte',
+                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon:
-                          const Icon(Icons.email, color: TColors.softGrey),
-                      labelStyle: const TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle:
-                          const TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Mot de passe',
-                      prefixIcon:
-                          const Icon(Icons.lock, color: TColors.softGrey),
-                      labelStyle: const TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle:
-                          const TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    style: const TextStyle(color: Colors.black),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: rememberMe,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            rememberMe = value ?? false;
-                          });
-                        },
-                        activeColor: TColors.secondary,
-                        checkColor: Colors.black,
-                        side: const BorderSide(
-                          color: TColors
-                              .softGrey, // Couleur lorsqu'elle n'est pas activée
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: const Icon(Icons.email, color: TColors.softGrey),
+                        labelStyle: const TextStyle(color: TColors.softGrey),
+                        floatingLabelStyle: const TextStyle(color: TColors.softGrey),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
                         ),
                       ),
-                      const Text('Se souvenir de moi',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text('Mot de passe oublié',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.white)),
+                      style: const TextStyle(color: Colors.black),
+                      validator: validateEmail, // Validation ajoutée ici
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Mot de passe',
+                        prefixIcon: const Icon(Icons.lock, color: TColors.softGrey),
+                        labelStyle: const TextStyle(color: TColors.softGrey),
+                        floatingLabelStyle: const TextStyle(color: TColors.softGrey),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  isLoading
-                      ? const CircularProgressIndicator()
-                      : ElevatedButton(
-                          onPressed: _login,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: TColors.secondary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            foregroundColor: TColors.black,
+                      style: const TextStyle(color: Colors.black),
+                      obscureText: true,
+                      validator: validatePassword, // Validation ajoutée ici
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: rememberMe,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              rememberMe = value ?? false;
+                            });
+                          },
+                          activeColor: TColors.secondary,
+                          checkColor: Colors.black,
+                          side: const BorderSide(
+                            color: TColors.softGrey, // Couleur lorsqu'elle n'est pas activée
                           ),
-                          child: const Text('Se connecter'),
                         ),
-                  const SizedBox(height: 20),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Vous n'avez pas de compte ? ",
-                              style: TextStyle(color: Colors.white)),
-                          TextButton(
-                            onPressed: () {
-                              Get.to(() => const SignUp());
-                            },
-                            child: const Text(
-                              'S\'inscrire',
+                        const Text('Se souvenir de moi',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold)),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text('Mot de passe oublié',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Get.to(() => const Home());
-                        },
-                        child: const Text(
-                          'Skip',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                                  fontSize: 12,
+                                  color: Colors.white)),
                         ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    isLoading
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                      onPressed: _login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: TColors.secondary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        foregroundColor: TColors.black,
                       ),
-                    ],
-                  ),
-                ],
+                      child: const Text('Se connecter'),
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Vous n'avez pas de compte ? ",
+                                style: TextStyle(color: Colors.white)),
+                            TextButton(
+                              onPressed: () {
+                                Get.to(() => const SignUp());
+                              },
+                              child: const Text(
+                                'S\'inscrire',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => const Home());
+                          },
+                          child: const Text(
+                            'Skip',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
