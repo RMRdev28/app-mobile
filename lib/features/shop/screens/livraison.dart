@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 import 'payment.dart';
+import 'package:plv/base_template.dart';
 
 class Livraison extends StatefulWidget {
   @override
@@ -152,11 +153,13 @@ class _LivraisonState extends State<Livraison> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Livraison'),
-      ),
-      body: SingleChildScrollView(
+    return BaseTemplate(
+        body: Theme(
+        data: ThemeData(
+        primaryColor: TColors.primary,
+        colorScheme: const ColorScheme.light(primary: TColors.primary),
+    ),
+    child: SingleChildScrollView(
         child: Column(
           children: [
             buildDesignOption(
@@ -243,6 +246,7 @@ class _LivraisonState extends State<Livraison> {
           ],
         ),
       ),
+    ),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
-import 'test.dart';
+import 'package:plv/base_template.dart';
 
 class Payemnt extends StatefulWidget {
   @override
@@ -16,11 +16,13 @@ class _PayemntState extends State<Payemnt> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Payment'),
-      ),
-      body: Column(
+    return BaseTemplate(
+        body: Theme(
+        data: ThemeData(
+        primaryColor: TColors.primary,
+        colorScheme: const ColorScheme.light(primary: TColors.primary),
+    ),
+    child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           CategoriesPayemnt(
@@ -44,6 +46,7 @@ class _PayemntState extends State<Payemnt> {
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -128,7 +131,6 @@ class _PayemntState extends State<Payemnt> {
                 Center(
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      Get.to(() => Test());
                     },
                     icon: Icon(Icons.shopping_cart),
                     label: Text('Payer avec CIB'),
