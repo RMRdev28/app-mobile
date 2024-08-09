@@ -5,6 +5,7 @@ import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 import 'package:get/get.dart';
 import 'signUp.dart';
+import 'forgetpassword.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -187,7 +188,7 @@ class _LoginState extends State<Login> {
                                 fontWeight: FontWeight.bold)),
                         const Spacer(),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {Get.to(() => ForgetPassword());},
                           child: const Text('Mot de passe oublié',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
