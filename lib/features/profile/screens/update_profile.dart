@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 import 'package:plv/utils/theme/theme.dart';
+import 'package:plv/base_template.dart';
 
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({super.key});
@@ -78,20 +79,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
   Widget build(BuildContext context) {
     final darkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-              color: darkMode ? TColors.white : TColors.dark),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        title: Text('Modification de Profile',
-            style: TextStyle(color: darkMode ? TColors.white : TColors.dark)),
-        backgroundColor: darkMode ? TColors.dark : TColors.white,
-      ),
-      body: Column(
+    return BaseTemplate(
+        body: Padding(
+        padding: const EdgeInsets.all(TSizes.md),
+    child: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
@@ -223,6 +214,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           ),
         ],
       ),
+    ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
 import 'package:get/get.dart';
 import 'livraison.dart';
+import 'package:plv/base_template.dart';
 
 class Caisse extends StatefulWidget {
   @override
@@ -15,11 +16,13 @@ class _CaisseState extends State<Caisse> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Caisse'),
-      ),
-      body: SingleChildScrollView(
+    return BaseTemplate(
+        body: Theme(
+        data: ThemeData(
+        primaryColor: TColors.primary,
+        colorScheme: const ColorScheme.light(primary: TColors.primary),
+    ),
+    child:SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -118,6 +121,7 @@ class _CaisseState extends State<Caisse> {
           ),
         ),
       ),
+    ),
     );
   }
 
@@ -130,36 +134,36 @@ class _CaisseState extends State<Caisse> {
         color: TColors.primaryBackground,
         borderRadius: BorderRadius.circular(4.0),
       ),
-      child: ExpansionTile(
-        title: Text(numero),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: Icon(
-                isExpanded ? Icons.expand_less : Icons.expand_more,
-                color: TColors.primary,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: ListTile(
+                  title: Text(numero),
+                ),
               ),
-              onPressed: () {
-                setState(() {
-                  _expandedStatus[numero] = !isExpanded;
-                });
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                // Logique de suppression
-              },
-            ),
-          ],
-        ),
-        children: _buildExpansionContent(),
-        onExpansionChanged: (bool expanded) {
-          setState(() {
-            _expandedStatus[numero] = expanded;
-          });
-        },
+              IconButton(
+                icon: Icon(
+                  isExpanded ? Icons.expand_less : Icons.expand_more,
+                  color: TColors.primary,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _expandedStatus[numero] = !isExpanded;
+                  });
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.delete, color: Colors.red),
+                onPressed: () {
+                  // Logique de suppression
+                },
+              ),
+            ],
+          ),
+          if (isExpanded) ..._buildExpansionContent(),
+        ],
       ),
     );
   }
