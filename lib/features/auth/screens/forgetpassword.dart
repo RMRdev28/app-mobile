@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:plv/utils/constants/colors.dart';
 import 'package:plv/utils/constants/sizes.dart';
+import 'login.dart';
+import 'package:get/get.dart';
 
 class ForgetPassword extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -68,7 +70,7 @@ class ForgetPassword extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // Action pour "Se connecter"
+                          Get.to(() => Login());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: TColors.primaryBackground,

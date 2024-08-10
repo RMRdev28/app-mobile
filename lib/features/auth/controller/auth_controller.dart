@@ -7,6 +7,7 @@ import 'package:plv/utils/device/device_utility.dart';
 import 'package:plv/utils/http/http_client.dart';
 
 class AuthController extends GetxController {
+  var isLoggedIn = false.obs;
   Future<User> login(String email, String password) async {
     final response = await HttpHelper.post("login/", {
       "email": email,
@@ -41,5 +42,10 @@ class AuthController extends GetxController {
     await TDeviceUtils().saveUser(user);
     // print("loggedIn");
     return true;
+  }
+
+  Future<void> checkToken() async {
+    String? token = await TDeviceUtils().getToken();
+    isLoggedIn.value = token != null;
   }
 }

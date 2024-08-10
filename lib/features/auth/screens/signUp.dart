@@ -22,6 +22,7 @@ class _SignUpState extends State<SignUp> {
   String _selectedOption = 'client';
   String? _fileName;
   PlatformFile? _selectedFile;
+  bool _isLoading = false;
 
   late TextEditingController nameController;
   late TextEditingController mobileController;
@@ -34,6 +35,8 @@ class _SignUpState extends State<SignUp> {
   List<dynamic> filteredCommunes = [];
   String? selectedWilaya;
   String? selectedCommune;
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   void _handleRadioValueChange(String? value) {
     setState(() {
@@ -54,14 +57,57 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  Future<bool> _register() async {
-    if (_selectedFile == null) return false;
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre email';
+    }
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Veuillez entrer un email valide';
+    }
+    return null;
+  }
 
-    // Convert file to base64
-    String base64File =
-        base64Encode(await File(_selectedFile!.path!).readAsBytes());
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre mot de passe';
+    }
+    return null;
+  }
 
-    Register reg = new Register(
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre nom et prénom';
+    }
+    return null;
+  }
+
+  String? validateMobile(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre numéro de mobile';
+    }
+    final phoneRegex = RegExp(r'^\d+$');
+    if (!phoneRegex.hasMatch(value)) {
+      return 'Veuillez entrer un numéro de mobile valide';
+    }
+    return null;
+  }
+
+  Future<void> _register() async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    String? base64File;
+    if (_selectedFile != null) {
+      base64File = base64Encode(await File(_selectedFile!.path!).readAsBytes());
+    }
+
+    Register reg = Register(
         email: emailController.text,
         password: passwordController.text,
         first_name: nameController.text,
@@ -70,7 +116,17 @@ class _SignUpState extends State<SignUp> {
         file: base64File);
 
     AuthController authController = Get.put(AuthController());
-    return await authController.register(reg);
+    bool success = await authController.register(reg);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (success) {
+      Get.to(const Home());
+    } else {
+      // Handle registration failure (e.g., show an error message)
+    }
   }
 
   @override
@@ -98,223 +154,231 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       backgroundColor: TColors.primary,
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 40),
-            Center(
-              child: Column(
-                children: [
-                  Image.asset("assets/images/logo.png", height: 100),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Inscription',
-                    style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Créez votre compte',
-                    style: TextStyle(fontSize: 16.0, color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Nom et Prénom',
-                      prefixIcon:
-                          const Icon(Icons.person, color: TColors.softGrey),
-                      labelStyle: const TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle:
-                          const TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: mobileController,
-                    decoration: InputDecoration(
-                      labelText: 'Mobile',
-                      prefixIcon:
-                          const Icon(Icons.phone, color: TColors.softGrey),
-                      labelStyle: const TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle:
-                          const TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon:
-                          const Icon(Icons.email, color: TColors.softGrey),
-                      labelStyle: const TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle:
-                          const TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Mot de passe',
-                      prefixIcon:
-                          const Icon(Icons.lock, color: TColors.softGrey),
-                      labelStyle: const TextStyle(color: TColors.softGrey),
-                      floatingLabelStyle:
-                          const TextStyle(color: TColors.softGrey),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: TColors.softGrey),
-                      ),
-                    ),
-                    style: const TextStyle(color: Colors.black),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 20),
-                  const Text("Type Utilisateur",
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 40),
+              Center(
+                child: Column(
+                  children: [
+                    Image.asset("assets/images/logo.png", height: 100),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Inscription',
                       style: TextStyle(
-                          color: TColors.softGrey,
-                          fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 10),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ListTile(
-                        title: const Text(
-                          'Departement Marketing Communication',
-                          style: TextStyle(color: TColors.softGrey),
-                        ),
-                        leading: Radio<String>(
-                          fillColor: WidgetStateProperty.all(Colors.white),
-                          value: 'client',
-                          groupValue: _selectedOption,
-                          onChanged: _handleRadioValueChange,
-                        ),
-                      ),
-                      ListTile(
-                        title: const Text(
-                          'professionnel Communication Publicité',
-                          style: TextStyle(color: TColors.softGrey),
-                        ),
-                        leading: Radio<String>(
-                          fillColor: WidgetStateProperty.all(Colors.white),
-                          value: 'fournisseur_non_valide',
-                          groupValue: _selectedOption,
-                          onChanged: _handleRadioValueChange,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      _selectedOption == "fournisseur_non_valide"
-                          ? ElevatedButton(
-                              onPressed: _pickFile,
-                              child: const Text('Upload File'),
-                            )
-                          : const SizedBox(),
-                      if (_fileName != null) ...[
-                        const SizedBox(height: 20),
-                        Text('Selected file: $_fileName'),
-                      ],
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_register() == true) {
-                        Get.to(const Home());
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: TColors.secondary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      foregroundColor: TColors.black,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
                     ),
-                    child: const Text('S\'inscrire'),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Déjà un compte ? ",
-                          style: TextStyle(color: Colors.white)),
-                      TextButton(
-                        onPressed: () {
-                          Get.to(() => const Login());
-                        },
-                        child: const Text(
-                          'Connectez-vous',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Créez votre compte',
+                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: 'Nom et Prénom',
+                        prefixIcon:
+                        const Icon(Icons.person, color: TColors.softGrey),
+                        labelStyle: const TextStyle(color: TColors.softGrey),
+                        floatingLabelStyle:
+                        const TextStyle(color: TColors.softGrey),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                      style: const TextStyle(color: Colors.white),
+                      validator: validateName,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: mobileController,
+                      decoration: InputDecoration(
+                        labelText: 'Mobile',
+                        prefixIcon:
+                        const Icon(Icons.phone, color: TColors.softGrey),
+                        labelStyle: const TextStyle(color: TColors.softGrey),
+                        floatingLabelStyle:
+                        const TextStyle(color: TColors.softGrey),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: validateMobile,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon:
+                        const Icon(Icons.email, color: TColors.softGrey),
+                        labelStyle: const TextStyle(color: TColors.softGrey),
+                        floatingLabelStyle:
+                        const TextStyle(color: TColors.softGrey),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: validateEmail,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Mot de passe',
+                        prefixIcon:
+                        const Icon(Icons.lock, color: TColors.softGrey),
+                        labelStyle: const TextStyle(color: TColors.softGrey),
+                        floatingLabelStyle:
+                        const TextStyle(color: TColors.softGrey),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: TColors.softGrey),
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      obscureText: true,
+                      validator: validatePassword,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text("Type Utilisateur",
+                        style: TextStyle(
+                            color: TColors.softGrey,
+                            fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 10),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ListTile(
+                          title: const Text(
+                            'Departement Marketing Communication',
+                            style: TextStyle(color: TColors.softGrey),
+                          ),
+                          leading: Radio<String>(
+                            fillColor: MaterialStateProperty.all(TColors.secondary),
+                            value: 'client',
+                            groupValue: _selectedOption,
+                            onChanged: _handleRadioValueChange,
+                          ),
+                        ),
+                        ListTile(
+                          title: const Text(
+                            'professionnel Communication Publicité',
+                            style: TextStyle(color: TColors.softGrey),
+                          ),
+                          leading: Radio<String>(
+                            fillColor: MaterialStateProperty.all(TColors.secondary),
+                            value: 'fournisseur_non_valide',
+                            groupValue: _selectedOption,
+                            onChanged: _handleRadioValueChange,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        _selectedOption == "fournisseur_non_valide"
+                            ? ElevatedButton(
+                          onPressed: _pickFile,
+                          child: const Text('Register Commerce'),
+                        )
+                            : const SizedBox(),
+                        if (_fileName != null) ...[
+                          const SizedBox(height: 20),
+                          Text('Selected file: $_fileName'),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _isLoading ? null : _register,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: TColors.secondary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        foregroundColor: TColors.black,
+                      ),
+                      child: _isLoading
+                          ? const CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.white),
+                      )
+                          : const Text('S\'inscrire'),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Déjà un compte ? ",
+                            style: TextStyle(color: Colors.white)),
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => const Login());
+                          },
+                          child: const Text(
+                            'Connectez-vous',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

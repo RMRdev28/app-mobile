@@ -15,6 +15,7 @@ class TDeviceUtils {
 
   static const String _tokenKey = 'auth_token';
   static const String _userLoggedIn = 'user_auth';
+  static const String _device_token = 'device_token';
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   Future<void> saveToken(String token) async {
@@ -23,6 +24,14 @@ class TDeviceUtils {
 
   Future<String?> getToken() async {
     return await _storage.read(key: _tokenKey);
+  }
+
+  Future<void> saveDeviceToken(String? token) async {
+    await _storage.write(key: _device_token, value: token);
+  }
+
+  Future<String?> getDeviceToken() async {
+    return await _storage.read(key: _device_token);
   }
 
   Future<void> removeToken() async {
