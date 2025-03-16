@@ -2,7 +2,7 @@
 # Application E-commerce Mobile (Flutter)
 # Description : 
 Développement d'une application de vente de drapeaux publicitaires.
-Fonctionnalités :
+# Fonctionnalités :
 •	Affichage des produits avec photos et descriptions.
 •	Système de panier d'achat et gestion des commandes et favorit.
 •	Système d'authentification et gestion de profile.
